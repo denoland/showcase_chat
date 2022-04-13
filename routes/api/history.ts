@@ -10,26 +10,16 @@ export const handler = async (
   }
 
   const { data, error } = await supabase
-    .from("users")
-    .select("id")
-    .eq("access_token", accessToken);
+    .from("messages")
+    .select("message,from(login)")
+    .eq("room", 0);
   if (error) {
     return new Response(error.message, { status: 400 });
   }
 
-  const id = data[0].id;
-  const message = await req.text();
-  const channel = new BroadcastChannel("test");
-  channel.postMessage(message);
-  channel.close();
-
-  await supabase
-    .from("messages")
-    .insert([{
-      message,
-      room: 0, // "test" room
-      from: id,
-    }], { returning: "minimal" });
-
-  return new Response("ok");
+  return new Response(JSON.stringify(data), {
+    headers: {
+      "content-type": "application/json",
+    },
+  });
 };

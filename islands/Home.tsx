@@ -12,7 +12,14 @@ export default function Home({ data }) {
     [],
   );
 
-  useEffect(() => {
+  useEffect(async () => {
+    // Get message history
+    const msgs = await fetch("/api/history")
+      .then((res) => res.json());
+    msgs.forEach(({ message, from }) =>
+      addMessage(`${from.login}: ${message}`)
+    );
+
     const events = new EventSource("/api/connect");
     events.addEventListener("message", (e) => {
       addMessage(JSON.parse(e.data));
@@ -22,13 +29,7 @@ export default function Home({ data }) {
   const send = () => {
     fetch("/api/send", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: input,
-        login: data.login,
-      }),
+      body: input,
     });
     setInput("");
   };
@@ -37,6 +38,7 @@ export default function Home({ data }) {
     <div>
       <p>hi {data.login}</p>
       <img src={data.avatar_url} />
+      <br />
       <input
         type="text"
         value={input}

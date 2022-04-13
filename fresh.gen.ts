@@ -3,17 +3,19 @@
 // To update this file, run `fresh manifest`.
 
 import * as $0 from "./routes/api/connect.ts";
-import * as $1 from "./routes/api/login.ts";
-import * as $2 from "./routes/api/send.ts";
-import * as $3 from "./routes/index.tsx";
+import * as $1 from "./routes/api/history.ts";
+import * as $2 from "./routes/api/login.ts";
+import * as $3 from "./routes/api/send.ts";
+import * as $4 from "./routes/index.tsx";
 import * as $$0 from "./islands/Home.tsx";
 
 const manifest = {
   routes: {
     "./routes/api/connect.ts": $0,
-    "./routes/api/login.ts": $1,
-    "./routes/api/send.ts": $2,
-    "./routes/index.tsx": $3,
+    "./routes/api/history.ts": $1,
+    "./routes/api/login.ts": $2,
+    "./routes/api/send.ts": $3,
+    "./routes/index.tsx": $4,
   },
   islands: {
     "./islands/Home.tsx": $$0,

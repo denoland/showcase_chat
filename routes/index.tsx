@@ -23,7 +23,9 @@ export const handler = async (
       return new Response(error.message, { status: 400 });
     }
 
-    return ctx.render(data[0]);
+    if (data.length !== 0) {
+      return ctx.render(data[0]);
+    }
   }
 
   // This is an oauth callback request.

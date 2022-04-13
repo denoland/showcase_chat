@@ -2,7 +2,7 @@
 import { h, useEffect, useReducer, useState } from "../client_deps.ts";
 
 export default function Home({ data }) {
-  if (!data.login) {
+  if (!data?.login) {
     return <a href="/api/login">Login with Github</a>;
   }
 

@@ -1,5 +1,3 @@
-/** @jsx h */
-import { h } from "../client_deps.ts";
 import {
   createOAuthUserAuth,
   getCookies,

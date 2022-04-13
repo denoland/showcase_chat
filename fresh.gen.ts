@@ -2,20 +2,24 @@
 // This file SHOULD be checked into source version control.
 // To update this file, run `fresh manifest`.
 
-import * as $0 from "./routes/api/connect.ts";
-import * as $1 from "./routes/api/history.ts";
-import * as $2 from "./routes/api/login.ts";
-import * as $3 from "./routes/api/send.ts";
-import * as $4 from "./routes/index.tsx";
+import * as $0 from "./routes/[room].tsx";
+import * as $1 from "./routes/_render.ts";
+import * as $2 from "./routes/api/connect.ts";
+import * as $3 from "./routes/api/history.ts";
+import * as $4 from "./routes/api/login.ts";
+import * as $5 from "./routes/api/send.ts";
+import * as $6 from "./routes/index.tsx";
 import * as $$0 from "./islands/Home.tsx";
 
 const manifest = {
   routes: {
-    "./routes/api/connect.ts": $0,
-    "./routes/api/history.ts": $1,
-    "./routes/api/login.ts": $2,
-    "./routes/api/send.ts": $3,
-    "./routes/index.tsx": $4,
+    "./routes/[room].tsx": $0,
+    "./routes/_render.ts": $1,
+    "./routes/api/connect.ts": $2,
+    "./routes/api/history.ts": $3,
+    "./routes/api/login.ts": $4,
+    "./routes/api/send.ts": $5,
+    "./routes/index.tsx": $6,
   },
   islands: {
     "./islands/Home.tsx": $$0,

@@ -11,16 +11,16 @@ export const handler = async (
 
   const { data, error } = await supabase
     .from("users")
-    .select("id")
+    .select("id,login,avatar_url")
     .eq("access_token", accessToken);
   if (error) {
     return new Response(error.message, { status: 400 });
   }
 
-  const id = data[0].id;
+  const { login, id, avatar_url } = data[0];
   const message = await req.text();
   const channel = new BroadcastChannel("test");
-  channel.postMessage(message);
+  channel.postMessage({ message, login, avatar_url });
   channel.close();
 
   await supabase

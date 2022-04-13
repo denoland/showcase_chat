@@ -11,7 +11,7 @@ export const handler = async (
 
   const { data, error } = await supabase
     .from("messages")
-    .select("message,from(login)")
+    .select("message,from(login,avatar_url)")
     .eq("room", 0);
   if (error) {
     return new Response(error.message, { status: 400 });

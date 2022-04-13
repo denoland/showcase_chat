@@ -42,15 +42,24 @@ export default function Home({ data }) {
 
   return (
     <div>
-      <p>Logged in as {data.login}</p>
-      <br />
-      <ul>
+      <div
+        className={tw
+          `flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-full text-green-700 bg-green-100 border border-green-300`}
+        style="width: fit-content;"
+      >
+        <div
+          class={tw`text-xs font-normal leading-none flex-initial`}
+        >
+          Logged in as {data.login}
+        </div>
+      </div>
+      <ul className={tw`pb-20`}>
         {messages.map((msg) => <Message message={msg} />)}
       </ul>
 
       <div
         className={tw
-          `flex items-center justify-between border-t border-gray-300 fixed inset-x-0 bottom-0 p-4`}
+          `flex items-center justify-between border-t border-gray-300 bg-white fixed inset-x-0 bottom-0 p-4`}
       >
         <input
           type="text"

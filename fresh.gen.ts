@@ -7,8 +7,9 @@ import * as $1 from "./routes/_render.ts";
 import * as $2 from "./routes/api/connect.ts";
 import * as $3 from "./routes/api/history.ts";
 import * as $4 from "./routes/api/login.ts";
-import * as $5 from "./routes/api/send.ts";
-import * as $6 from "./routes/index.tsx";
+import * as $5 from "./routes/api/logout.ts";
+import * as $6 from "./routes/api/send.ts";
+import * as $7 from "./routes/index.tsx";
 import * as $$0 from "./islands/Home.tsx";
 
 const manifest = {
@@ -18,8 +19,9 @@ const manifest = {
     "./routes/api/connect.ts": $2,
     "./routes/api/history.ts": $3,
     "./routes/api/login.ts": $4,
-    "./routes/api/send.ts": $5,
-    "./routes/index.tsx": $6,
+    "./routes/api/logout.ts": $5,
+    "./routes/api/send.ts": $6,
+    "./routes/index.tsx": $7,
   },
   islands: {
     "./islands/Home.tsx": $$0,

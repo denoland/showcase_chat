@@ -3,7 +3,9 @@ import { RenderContext, RenderFn, virtualSheet } from "../server_deps.ts";
 
 const sheet = virtualSheet();
 sheet.reset();
-setup({ sheet });
+setup({
+  sheet,
+});
 
 export function render(ctx: RenderContext, render: RenderFn) {
   const snapshot = ctx.state.get("twindSnapshot") as unknown[] | null;

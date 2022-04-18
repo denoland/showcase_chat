@@ -43,7 +43,7 @@ export default function Home({ data }) {
       </ul>
       <ChatInput
         input={input}
-        setInput={setInput}
+        onInput={setInput}
         onSend={send}
       />
     </div>

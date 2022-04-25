@@ -13,25 +13,33 @@ export const handler = async (
   if (!accessToken) {
     return Response.redirect(new URL(req.url).origin);
   }
+  const login = await supabase
+    .from("users")
+    .select("login,avatar_url")
+    .eq("access_token", maybeAccessToken);
+  if (login.error) {
+    console.log(login.error);
+    return new Response(login.error.message, { status: 400 });
+  }
 
-  const { room } = ctx.params;
+  const { room } = ctx.params; // TODO: use room
 
-  const { data, error } = await supabase
+  const messages = await supabase
     .from("messages")
     .select("message,from(login,avatar_url)")
     .eq("room", 0);
-  if (error) {
-    return new Response(error.message, { status: 400 });
+  if (messages.error) {
+    return new Response(messages.error.message, { status: 400 });
   }
 
-  return ctx.render({ messages: data });
+  return ctx.render({ messages: messages.data, login: messages.data[0] });
 };
 
 export default function Room({ data }) {
   return (
     <div>
       <Sidebar>
-        <Chat initialMessages={data.messages} />
+        <Chat initialMessages={data.messages} login={data.login} />
       </Sidebar>
     </div>
   );

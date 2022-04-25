@@ -10,7 +10,8 @@ import * as $4 from "./routes/api/login.ts";
 import * as $5 from "./routes/api/logout.ts";
 import * as $6 from "./routes/api/send.ts";
 import * as $7 from "./routes/index.tsx";
-import * as $$0 from "./islands/Home.tsx";
+import * as $$0 from "./islands/AddRoom.tsx";
+import * as $$1 from "./islands/Chat.tsx";
 
 const manifest = {
   routes: {
@@ -24,7 +25,8 @@ const manifest = {
     "./routes/index.tsx": $7,
   },
   islands: {
-    "./islands/Home.tsx": $$0,
+    "./islands/AddRoom.tsx": $$0,
+    "./islands/Chat.tsx": $$1,
   },
   baseUrl: import.meta.url,
 };

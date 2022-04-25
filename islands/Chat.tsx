@@ -1,34 +1,36 @@
 /** @jsx h */
 import { h, tw, useEffect, useReducer, useState } from "../client_deps.ts";
 
-type UserMessage = {
-  message: string;
+interface User {
   login: string;
   avatar_url: string;
-};
+}
 
-export default function Home({ data }) {
+interface Message {
+  message: string;
+  from: User;
+}
+
+export default function Chat(
+  { initialMessages, login }: { initialMessages: Message[] },
+) {
   const [input, setInput] = useState("");
   const [messages, addMessage] = useReducer<Message[], Message>(
     (msgs, msg) => [...msgs, msg],
-    [],
+    initialMessages,
   );
 
   useEffect(async () => {
-    // Get message history
-    const msgs = await fetch("/api/history")
-      .then((res) => res.json());
-    msgs.forEach(({ message, from }) =>
-      addMessage({ message, login: from.login, avatar_url: from.avatar_url })
-    );
-
     const events = new EventSource("/api/connect");
     events.addEventListener("message", (e) => {
       addMessage(JSON.parse(e.data));
     });
-  }, [data.login]);
+  }, [login]);
 
   const send = () => {
+    if (input === "") {
+      return;
+    }
     fetch("/api/send", {
       method: "POST",
       body: input,
@@ -37,10 +39,10 @@ export default function Home({ data }) {
   };
 
   return (
-    <div>
-      <ul className={tw`pb-20`}>
+    <div className={tw`flex flex-1 h-screen`}>
+      <div className={tw`mb-20 overflow-y-scroll w-full`}>
         {messages.map((msg) => <Message message={msg} />)}
-      </ul>
+      </div>
       <ChatInput
         input={input}
         onInput={setInput}
@@ -79,7 +81,7 @@ function ChatInput({ input, onInput, onSend }) {
   );
 }
 
-function Message({ message }) {
+function Message({ message }: { message: Message }) {
   return (
     <div
       className={tw
@@ -90,14 +92,14 @@ function Message({ message }) {
           `overflow-hidden relative mt-0.5 mr-4 w-10 min-w-fit h-10 rounded-full`}
       >
         <img
-          src={message.avatar_url}
+          src={message.from.avatar_url}
           className={tw`absolute w-full h-full object-cover`}
         />
       </div>
       <div>
         <p className={tw`flex items-baseline`}>
           <span className={tw`mr-2 font-medium`}>
-            {message.login}
+            {message.from.login}
           </span>
         </p>
         <p className={tw`text-gray-800`}>{message.message}</p>

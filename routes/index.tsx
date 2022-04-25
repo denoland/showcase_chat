@@ -7,12 +7,13 @@ import {
   setCookie,
   supabase,
 } from "../server_deps.ts";
-import Home from "../islands/Home.tsx";
 
 export const handler = async (
   req: Request,
   ctx: HandlerContext,
 ): Promise<Response> => {
+  const defaultRoomURL = new URL(req.url);
+  defaultRoomURL.pathname = "/lobby";
   // Get cookie from request header and parse it
   const maybeAccessToken = getCookies(req.headers)["deploy_chat_token"];
   if (maybeAccessToken) {
@@ -26,7 +27,7 @@ export const handler = async (
     }
 
     if (data.length !== 0) {
-      return ctx.render(data[0]);
+      return Response.redirect(defaultRoomURL);
     }
   }
 
@@ -34,7 +35,7 @@ export const handler = async (
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   if (!code) {
-    return ctx.render({});
+    return ctx.render({}); // TODO: change to redirect
   }
 
   const request = await fetch("https://github.com/login/oauth/access_token", {
@@ -52,7 +53,7 @@ export const handler = async (
   const { access_token, scope } = await request.json();
 
   if (!access_token) {
-    return ctx.render({});
+    return ctx.render({}); // TODO: change to redirect
   }
 
   // Get user info
@@ -78,7 +79,7 @@ export const handler = async (
     console.log(error);
     return new Response(error.message, { status: 400 });
   }
-  const response = ctx.render({ login, avatar_url });
+  const response = Response.redirect(defaultRoomURL);
   setCookie(response.headers, {
     name: "deploy_chat_token",
     value: access_token,
@@ -88,135 +89,7 @@ export const handler = async (
   return response;
 };
 
-export default function Main({ data }) {
-  if (!data?.login) {
-    return <SignIn />;
-  }
-
-  return (
-    <div>
-      <Sidebar>
-        <Home data={data} />
-      </Sidebar>
-    </div>
-  );
-}
-
-function Sidebar({ children }) {
-  return (
-    <div className={tw`flex h-screen pb-16`}>
-      <div
-        className={tw
-          `flex flex-col flex-shrink-0 h-full px-2 py-4 border-r border-gray-300 inset-y-0 z-10 flex flex-shrink-0 bg-white border-r static`}
-      >
-        <div
-          className={tw
-            `flex flex-col items-center justify-center flex-1 space-y-4`}
-        >
-          <a
-            className={tw`inline-block text-xl font-bold tracking-wider`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={tw`h-6 w-6`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-          </a>
-          <a className={tw`inline-block font-bold tracking-wider`}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={tw`h-6 w-6`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </a>
-          <div
-            className={tw
-              `flex flex-col items-center justify-end flex-1 space-y-4`}
-          >
-            <Link href="/api/logout">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={tw`h-6 w-6`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className={tw`flex flex-1 h-screen overflow-y-scroll`}>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function Header({ children, data }) {
-  return (
-    <ul className={tw`flex p-2 justify-between`}>
-      <li className={tw`mr-6`}>
-        <a>
-          <div
-            className={tw
-              `flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-full text-green-700 bg-green-100 border border-green-300`}
-            style="width: fit-content;"
-          >
-            <div
-              class={tw`text-xs font-normal leading-none flex-initial`}
-            >
-              Logged in as {data.login}
-            </div>
-          </div>
-        </a>
-      </li>
-      <li className={tw`mr-2 flex items-center space-x-2`}>
-        <Link href="/api/logout">
-          Logout
-        </Link>
-      </li>
-    </ul>
-  );
-}
-
-function Link({ children, href }) {
-  return (
-    <a
-      href={href}
-      className={tw
-        `text-sm rounded flex justify-start items-center cursor-pointer`}
-    >
-      {children}
-    </a>
-  );
-}
-
-function SignIn() {
+export default function Main() {
   return (
     <div
       className={tw`min-h-screen flex justify-center items-center flex-col`}

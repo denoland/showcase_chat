@@ -20,7 +20,7 @@ export const handler = async (
   const { login, id, avatar_url } = data[0];
   const message = await req.text();
   const channel = new BroadcastChannel("test");
-  channel.postMessage({ message, login, avatar_url });
+  channel.postMessage({ message, from: { login, avatar_url } });
   channel.close();
 
   await supabase

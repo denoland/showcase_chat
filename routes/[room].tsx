@@ -16,7 +16,7 @@ export const handler = async (
   const login = await supabase
     .from("users")
     .select("login,avatar_url")
-    .eq("access_token", maybeAccessToken);
+    .eq("access_token", accessToken);
   if (login.error) {
     console.log(login.error);
     return new Response(login.error.message, { status: 400 });

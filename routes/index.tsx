@@ -7,13 +7,12 @@ import {
   setCookie,
   supabase,
 } from "../server_deps.ts";
+import Room from "./[room].tsx";
 
 export const handler = async (
   req: Request,
   ctx: HandlerContext,
 ): Promise<Response> => {
-  const defaultRoomURL = new URL(req.url);
-  defaultRoomURL.pathname = "/lobby";
   // Get cookie from request header and parse it
   const maybeAccessToken = getCookies(req.headers)["deploy_chat_token"];
   if (maybeAccessToken) {
@@ -26,8 +25,16 @@ export const handler = async (
       return new Response(error.message, { status: 400 });
     }
 
+    // Load messages from the default room.
+    const messages = await supabase
+      .from("messages")
+      .select("message,from(login,avatar_url)")
+      .eq("room", 0);
+    if (messages.error) {
+      return new Response(messages.error.message, { status: 400 });
+    }
     if (data.length !== 0) {
-      return Response.redirect(defaultRoomURL);
+      return ctx.render({ ...data[0], messages: messages.data });
     }
   }
 
@@ -35,7 +42,7 @@ export const handler = async (
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   if (!code) {
-    return ctx.render({}); // TODO: change to redirect
+    return ctx.render(false);
   }
 
   const request = await fetch("https://github.com/login/oauth/access_token", {
@@ -53,7 +60,7 @@ export const handler = async (
   const { access_token, scope } = await request.json();
 
   if (!access_token) {
-    return ctx.render({}); // TODO: change to redirect
+    return ctx.render(false);
   }
 
   // Get user info
@@ -79,7 +86,17 @@ export const handler = async (
     console.log(error);
     return new Response(error.message, { status: 400 });
   }
-  const response = Response.redirect(defaultRoomURL);
+
+  // Load messages from the default room.
+  const messages = await supabase
+    .from("messages")
+    .select("message,from(login,avatar_url)")
+    .eq("room", 0);
+  if (messages.error) {
+    return new Response(messages.error.message, { status: 400 });
+  }
+
+  const response = ctx.render({ login, avatar_url, messages: messages.data });
   setCookie(response.headers, {
     name: "deploy_chat_token",
     value: access_token,
@@ -89,7 +106,11 @@ export const handler = async (
   return response;
 };
 
-export default function Main() {
+export default function Main({ data }) {
+  if (data) {
+    // Alread logged in. Load messages from the default room.
+    return <Room data={data} />;
+  }
   return (
     <div
       className={tw`min-h-screen flex justify-center items-center flex-col`}

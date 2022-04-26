@@ -104,6 +104,7 @@ function ChatInput({ input, onInput, onSend }) {
           `block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700`}
         value={input}
         onInput={(e) => onInput(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && onSend()}
       />
       <button onClick={onSend}>
         <svg

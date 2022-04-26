@@ -22,24 +22,31 @@ export const handler = async (
     return new Response(login.error.message, { status: 400 });
   }
 
-  const { room } = ctx.params; // TODO: use room
+  if (isNaN(ctx.params.room)) {
+    return new Response("Invalid room id", { status: 400 });
+  }
 
   const messages = await supabase
     .from("messages")
     .select("message,from(login,avatar_url)")
-    .eq("room", 0);
+    .eq("room", +ctx.params.room);
   if (messages.error) {
+    console.log(messages.error);
     return new Response(messages.error.message, { status: 400 });
   }
 
-  return ctx.render({ messages: messages.data, login: messages.data[0] });
+  return ctx.render({ messages: messages.data, login: login.data[0] });
 };
 
-export default function Room({ data }) {
+export default function Room({ data, params }) {
   return (
     <div>
       <Sidebar>
-        <Chat initialMessages={data.messages} login={data.login} />
+        <Chat
+          room={params.room}
+          initialMessages={data.messages}
+          login={data.login}
+        />
       </Sidebar>
     </div>
   );

@@ -12,7 +12,10 @@ interface Message {
 }
 
 export default function Chat(
-  { initialMessages, login }: { initialMessages: Message[] },
+  { room, initialMessages, login }: {
+    room: number;
+    initialMessages: Message[];
+  },
 ) {
   const [input, setInput] = useState("");
   const [messages, addMessage] = useReducer<Message[], Message>(
@@ -21,7 +24,7 @@ export default function Chat(
   );
 
   useEffect(async () => {
-    const events = new EventSource("/api/connect");
+    const events = new EventSource("/api/connect/" + room);
     events.addEventListener("message", (e) => {
       addMessage(JSON.parse(e.data));
     });
@@ -33,7 +36,10 @@ export default function Chat(
     }
     fetch("/api/send", {
       method: "POST",
-      body: input,
+      body: JSON.stringify({
+        message: input,
+        room,
+      }),
     });
     setInput("");
   };
@@ -93,6 +99,7 @@ function Message({ message }: { message: Message }) {
       >
         <img
           src={message.from.avatar_url}
+          alt={`${message.from.login}'s avatar`}
           className={tw`absolute w-full h-full object-cover`}
         />
       </div>

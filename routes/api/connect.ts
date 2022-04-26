@@ -1,10 +1,8 @@
+import { PageConfig } from "../../client_deps.ts";
 import { HandlerContext } from "../../server_deps.ts";
 
-export const handler = async (
-  req: Request,
-  _ctx: HandlerContext,
-): Promise<Response> => {
-  const channel = new BroadcastChannel("test");
+export function handler(_req: Request, ctx: HandlerContext): Response {
+  const channel = new BroadcastChannel(ctx.params.room);
 
   const stream = new ReadableStream({
     start: (controller) => {
@@ -21,4 +19,8 @@ export const handler = async (
   return new Response(stream.pipeThrough(new TextEncoderStream()), {
     headers: { "content-type": "text/event-stream" },
   });
+}
+
+export const config: PageConfig = {
+  routeOverride: "/api/connect/:room",
 };

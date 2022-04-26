@@ -1,4 +1,4 @@
-import { getCookies, HandlerContext, supabase } from "../../server_deps.ts";
+import { getCookies, HandlerContext, emojify, supabase } from "../../server_deps.ts";
 
 export const handler = async (
   req: Request,
@@ -17,7 +17,8 @@ export const handler = async (
   }
 
   const { login, id, avatar_url } = data[0];
-  const { isTyping, message, room } = await req.json();
+  let { isTyping, message, room } = await req.json();
+  message = emojify(message);
   const channel = new BroadcastChannel(room);
   if (isTyping) {
     // Send `is typing...` indicator.

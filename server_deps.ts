@@ -7,6 +7,7 @@ export {
   setCookie,
 } from "https://deno.land/std@0.134.0/http/cookie.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
+export { emojify } from "https://esm.sh/@twuni/emojify";
 
 export const supabase = createClient(
   "https://bbmzbbmtwmdaecpqtjln.supabase.co",

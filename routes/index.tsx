@@ -113,7 +113,7 @@ export const handler = async (
 export default function Main({ data }) {
   if (data) {
     // Alread logged in. Load messages from the default room.
-    return <Room data={data} />;
+    return <Room data={data} params={{ room: 0 }} />;
   }
   return (
     <div

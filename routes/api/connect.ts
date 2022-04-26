@@ -2,7 +2,6 @@ import { PageConfig } from "../../client_deps.ts";
 import { HandlerContext } from "../../server_deps.ts";
 
 export function handler(_req: Request, ctx: HandlerContext): Response {
-  console.log(ctx.params.room);
   const channel = new BroadcastChannel(ctx.params.room);
 
   const stream = new ReadableStream({

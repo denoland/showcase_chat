@@ -22,11 +22,25 @@ export default function Chat(
     (msgs, msg) => [...msgs, msg],
     initialMessages,
   );
+  const [typing, setTyping] = useState<
+    { user: User; interval: Interval } | null
+  >(null);
 
   useEffect(async () => {
     const events = new EventSource("/api/connect/" + room);
     events.addEventListener("message", (e) => {
-      addMessage(JSON.parse(e.data));
+      const msg = JSON.parse(e.data);
+      if (msg.isTyping) {
+        if (typing) {
+          clearInterval(typing.interval);
+        }
+        const interval = setTimeout(() => {
+          setTyping(null);
+        }, 5000);
+        setTyping({ user: msg.from, interval });
+        return;
+      }
+      addMessage(msg);
     });
   }, [login]);
 
@@ -48,10 +62,24 @@ export default function Chat(
     <div className={tw`flex flex-1 h-screen`}>
       <div className={tw`mb-20 overflow-y-scroll w-full`}>
         {messages.map((msg) => <Message message={msg} />)}
+        {typing && (
+          <div className={tw`py-0.5 pr-16 pl-4 text-sm text-gray-600`}>
+            {typing.user.login} is typing...
+          </div>
+        )}
       </div>
       <ChatInput
         input={input}
-        onInput={setInput}
+        onInput={(input) => {
+          setInput(input);
+          fetch("/api/send", {
+            method: "POST",
+            body: JSON.stringify({
+              room,
+              isTyping: true,
+            }),
+          });
+        }}
         onSend={send}
       />
     </div>

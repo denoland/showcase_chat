@@ -8,7 +8,6 @@ export const handler = async (
   if (!accessToken) {
     return new Response("Not signed in", { status: 401 });
   }
-
   const { data, error } = await supabase
     .from("users")
     .select("id,login,avatar_url")
@@ -18,8 +17,15 @@ export const handler = async (
   }
 
   const { login, id, avatar_url } = data[0];
-  const { message, room } = await req.json();
+  const { isTyping, message, room } = await req.json();
   const channel = new BroadcastChannel(room);
+  if (isTyping) {
+    // Send `is typing...` indicator.
+    channel.postMessage({ isTyping, from: { login, avatar_url } });
+    channel.close();
+    return new Response("OK");
+  }
+
   channel.postMessage({ message, from: { login, avatar_url } });
   channel.close();
 
@@ -31,5 +37,5 @@ export const handler = async (
       from: id,
     }], { returning: "minimal" });
 
-  return new Response("ok");
+  return new Response("OK");
 };

@@ -96,8 +96,7 @@ export const handler = async (
     return new Response(messages.error.message, { status: 400 });
   }
 
-  const response = ctx.render({ login, avatar_url, messages: messages.data });
-  console.log(response);
+  const response = await ctx.render({ login, avatar_url, messages: messages.data });
   setCookie(response.headers, {
     name: "deploy_chat_token",
     value: access_token,

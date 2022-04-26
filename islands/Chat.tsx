@@ -27,6 +27,7 @@ export default function Chat(
   >(null);
 
   useEffect(async () => {
+    Notification.requestPermission();
     const events = new EventSource("/api/connect/" + room);
     events.addEventListener("message", (e) => {
       const msg = JSON.parse(e.data);
@@ -41,6 +42,10 @@ export default function Chat(
         return;
       }
       addMessage(msg);
+      new Notification(`New message from ${msg.from.login}`, {
+        body: msg.message,
+        icon: msg.from.avatar_url,
+      });
     });
   }, [login]);
 

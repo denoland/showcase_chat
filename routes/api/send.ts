@@ -1,4 +1,9 @@
-import { getCookies, HandlerContext, emojify, supabase } from "../../server_deps.ts";
+import {
+  emojify,
+  getCookies,
+  HandlerContext,
+  supabase,
+} from "../../server_deps.ts";
 
 export const handler = async (
   req: Request,

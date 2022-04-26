@@ -18,8 +18,8 @@ export const handler = async (
   }
 
   const { login, id, avatar_url } = data[0];
-  const message = await req.text();
-  const channel = new BroadcastChannel("test");
+  const { message, room } = await req.json();
+  const channel = new BroadcastChannel(room);
   channel.postMessage({ message, from: { login, avatar_url } });
   channel.close();
 
@@ -27,7 +27,7 @@ export const handler = async (
     .from("messages")
     .insert([{
       message,
-      room: 0, // "test" room
+      room,
       from: id,
     }], { returning: "minimal" });
 

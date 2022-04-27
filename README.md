@@ -10,8 +10,9 @@ To get started, setup your `.env` with Supabase and Github OAuth credentials:
 ```
 CLIENT_ID=abc
 CLIENT_SECRET=abc123
-SUPABASE_DB_PASSWORD=xyz123
 SUPABASE_ANON_KEY=xyz
+SUPABASE_API_URL=https://xyzxyzxyzxyzxyzxyzxy.supabase.co
+SUPABASE_DB_PASSWORD=xyz123
 ```
 
 and fire up the server:

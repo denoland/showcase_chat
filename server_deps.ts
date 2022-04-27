@@ -10,6 +10,6 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js";
 export { emojify } from "https://esm.sh/@twuni/emojify";
 
 export const supabase = createClient(
-  "https://bbmzbbmtwmdaecpqtjln.supabase.co",
+  Deno.env.get("SUPABASE_API_URL"),
   Deno.env.get("SUPABASE_ANON_KEY"),
 );

@@ -43,6 +43,6 @@ create table messages (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   message text,
   "from" integer references users (id),
-  "to" integer references rooms (id)
+  "room" integer references rooms (id)
 );
 ```

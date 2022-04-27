@@ -45,4 +45,6 @@ create table messages (
   "from" integer references users (id),
   "room" integer references rooms (id)
 );
+
+insert into rooms (id, name) values (0, 'Lobby');
 ```

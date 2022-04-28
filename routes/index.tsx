@@ -1,5 +1,5 @@
 /** @jsx h */
-import { h, tw } from "../client_deps.ts";
+import { h, PageProps, tw } from "../client_deps.ts";
 import {
   createOAuthUserAuth,
   getCookies,
@@ -25,16 +25,15 @@ export const handler = async (
       return new Response(error.message, { status: 400 });
     }
 
-    // Load messages from the default room.
-    const messages = await supabase
-      .from("messages")
-      .select("message,from(login,avatar_url)")
-      .eq("room", 0);
-    if (messages.error) {
-      return new Response(messages.error.message, { status: 400 });
+    // Load all rooms.
+    const rooms = await supabase.from("rooms_with_activity").select(
+      "id,name,last_message_at",
+    );
+    if (rooms.error) {
+      return new Response(rooms.error.message, { status: 400 });
     }
     if (data.length !== 0) {
-      return ctx.render({ ...data[0], messages: messages.data });
+      return ctx.render({ rooms: rooms.data });
     }
   }
 
@@ -87,19 +86,8 @@ export const handler = async (
     return new Response(error.message, { status: 400 });
   }
 
-  // Load messages from the default room.
-  const messages = await supabase
-    .from("messages")
-    .select("message,from(login,avatar_url)")
-    .eq("room", 0);
-  if (messages.error) {
-    return new Response(messages.error.message, { status: 400 });
-  }
-
   const response = await ctx.render({
-    login,
-    avatar_url,
-    messages: messages.data,
+    rooms: rooms.data,
   });
   setCookie(response.headers, {
     name: "deploy_chat_token",
@@ -110,10 +98,45 @@ export const handler = async (
   return response;
 };
 
-export default function Main({ data }) {
+export default function Main(
+  { url, data }: PageProps<
+    { rooms: { id: number; name: string; last_message_at: string }[] }
+  >,
+) {
   if (data) {
-    // Alread logged in. Load messages from the default room.
-    return <Room data={data} params={{ room: 0 }} />;
+    // Already logged in. Show list of rooms.
+    return (
+      <div
+        className={tw`flex justify-center content-center items-center min-h-screen`}
+      >
+        <ul role="list" className={tw`divide-y divide-gray-200`}>
+          {data.rooms.map((room) => {
+            return (
+              <li key={room.id} className={tw`py-4 flex`}>
+                <a
+                  href={new URL(room.id.toString(), url).href}
+                  className={tw`ml-3 block`}
+                >
+                  <p className={tw`text-sm font-medium text-gray-900`}>
+                    {room.name}
+                  </p>
+                  <p className={tw`text-sm text-gray-500`}>
+                    {room.last_message_at ?
+                      new Intl.DateTimeFormat("en-US", {
+                      dateStyle: "long",
+                      timeStyle: "medium",
+                    }).format(new Date(room.last_message_at).getTime())
+                    :
+                    "No messages"}
+                  </p>
+
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
   }
   return (
     <div

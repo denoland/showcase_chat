@@ -58,7 +58,7 @@ export default function Chat(
   }, [login]);
 
   useEffect(() => {
-    const container = messagesContainer;
+    const container = messagesContainer.current;
     if (container) {
       container.scrollTop = container.scrollHeight;
     }

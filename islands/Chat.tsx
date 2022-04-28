@@ -1,5 +1,12 @@
 /** @jsx h */
-import { h, tw, useEffect, useReducer, useState } from "../client_deps.ts";
+import {
+  h,
+  tw,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "../client_deps.ts";
 
 interface User {
   login: string;
@@ -17,6 +24,7 @@ export default function Chat(
     initialMessages: Message[];
   },
 ) {
+  const messagesContainer = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const [messages, addMessage] = useReducer<Message[], Message>(
     (msgs, msg) => [...msgs, msg],
@@ -49,6 +57,13 @@ export default function Chat(
     });
   }, [login]);
 
+  useEffect(() => {
+    const container = messagesContainer;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [messages.length]);
+
   const send = () => {
     if (input === "") {
       return;
@@ -65,7 +80,10 @@ export default function Chat(
 
   return (
     <div className={tw`flex flex-1 h-screen`}>
-      <div className={tw`mb-20 overflow-y-scroll w-full`}>
+      <div
+        className={tw`mb-20 overflow-y-scroll w-full`}
+        ref={messagesContainer}
+      >
         {messages.map((msg) => <Message message={msg} />)}
         {typing && (
           <div className={tw`py-0.5 pr-16 pl-4 text-sm text-gray-600`}>

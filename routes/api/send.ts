@@ -4,6 +4,9 @@ import {
   HandlerContext,
   supabase,
 } from "../../server_deps.ts";
+import { BadWordsCleanerLoader } from "./bad_words.ts";
+
+const badWordsCleanerLoader = new BadWordsCleanerLoader();
 
 export const handler = async (
   req: Request,
@@ -23,7 +26,6 @@ export const handler = async (
 
   const { login, id, avatar_url } = data[0];
   let { isTyping, message, room } = await req.json();
-  message = emojify(message);
   const channel = new BroadcastChannel(room);
   if (isTyping) {
     // Send `is typing...` indicator.
@@ -31,6 +33,9 @@ export const handler = async (
     channel.close();
     return new Response("OK");
   }
+
+  const badWordsCleaner = await badWordsCleanerLoader.getInstance();
+  message = emojify(badWordsCleaner.clean(message));
 
   channel.postMessage({ message, from: { login, avatar_url } });
   channel.close();

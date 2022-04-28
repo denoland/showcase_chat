@@ -107,7 +107,8 @@ export default function Main(
     // Already logged in. Show list of rooms.
     return (
       <div
-        className={tw`flex justify-center content-center items-center min-h-screen`}
+        className={tw
+          `flex justify-center content-center items-center min-h-screen`}
       >
         <ul role="list" className={tw`divide-y divide-gray-200`}>
           {data.rooms.map((room) => {
@@ -121,15 +122,13 @@ export default function Main(
                     {room.name}
                   </p>
                   <p className={tw`text-sm text-gray-500`}>
-                    {room.last_message_at ?
-                      new Intl.DateTimeFormat("en-US", {
-                      dateStyle: "long",
-                      timeStyle: "medium",
-                    }).format(new Date(room.last_message_at).getTime())
-                    :
-                    "No messages"}
+                    {room.last_message_at
+                      ? new Intl.DateTimeFormat("en-US", {
+                        dateStyle: "long",
+                        timeStyle: "medium",
+                      }).format(new Date(room.last_message_at).getTime())
+                      : "No messages"}
                   </p>
-
                 </a>
               </li>
             );

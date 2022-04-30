@@ -117,9 +117,9 @@ export default function Chat(
 }
 
 function ChatInput({ input, onInput, onSend }: {
-  input: string,
+  input: string;
   onInput: (input: string) => void;
-  onSend: () => void
+  onSend: () => void;
 }) {
   return (
     <div

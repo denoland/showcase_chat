@@ -9,10 +9,10 @@ import {
 } from "../server_deps.ts";
 import Room from "./[room].tsx";
 
-export const handler = async (
+export async function handler(
   req: Request,
   ctx: HandlerContext,
-): Promise<Response> => {
+): Promise<Response> {
   // Get cookie from request header and parse it
   const maybeAccessToken = getCookies(req.headers)["deploy_chat_token"];
   if (maybeAccessToken) {
@@ -25,15 +25,8 @@ export const handler = async (
       return new Response(error.message, { status: 400 });
     }
 
-    // Load all rooms.
-    const rooms = await supabase.from("rooms_with_activity").select(
-      "id,name,last_message_at",
-    );
-    if (rooms.error) {
-      return new Response(rooms.error.message, { status: 400 });
-    }
     if (data.length !== 0) {
-      return ctx.render({ rooms: rooms.data });
+      return ctx.render({ rooms: await loadRooms() });
     }
   }
 
@@ -87,7 +80,7 @@ export const handler = async (
   }
 
   const response = await ctx.render({
-    rooms: data.rooms,
+    rooms: await loadRooms(),
   });
   setCookie(response.headers, {
     name: "deploy_chat_token",
@@ -96,7 +89,17 @@ export const handler = async (
     httpOnly: true,
   });
   return response;
-};
+}
+
+async function loadRooms() {
+  const rooms = await supabase.from("rooms_with_activity").select(
+    "id,name,last_message_at",
+  );
+  if (rooms.error) {
+    throw new Error(rooms.error.message);
+  }
+  return rooms.data;
+}
 
 export default function Main(
   { url, data }: PageProps<

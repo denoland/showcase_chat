@@ -56,7 +56,7 @@ export const handler = async (
       "Content-Type": "application/json",
     },
   });
-  const { access_token, scope } = await request.json();
+  const { access_token } = await request.json();
 
   if (!access_token) {
     return ctx.render(false);
@@ -73,21 +73,21 @@ export const handler = async (
   // Insert user into database
   const { data, error } = await supabase
     .from("users")
-    .insert([
+    .upsert([
       {
         login,
         id,
         avatar_url,
         access_token,
       },
-    ], { upsert: true, returning: "minimal" });
+    ], { returning: "minimal" });
   if (error) {
     console.log(error);
     return new Response(error.message, { status: 400 });
   }
 
   const response = await ctx.render({
-    rooms: rooms.data,
+    rooms: data.rooms,
   });
   setCookie(response.headers, {
     name: "deploy_chat_token",

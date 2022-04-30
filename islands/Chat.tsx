@@ -22,6 +22,7 @@ export default function Chat(
   { room, initialMessages, login }: {
     room: number;
     initialMessages: Message[];
+    login: string;
   },
 ) {
   const messagesContainer = useRef<HTMLDivElement>(null);
@@ -31,13 +32,19 @@ export default function Chat(
     initialMessages,
   );
   const [typing, setTyping] = useState<
-    { user: User; interval: Interval } | null
+    { user: User; interval: number } | null
   >(null);
 
-  useEffect(async () => {
+  useEffect(() => {
     Notification.requestPermission();
     const events = new EventSource("/api/connect/" + room);
-    events.addEventListener("message", (e) => {
+    events.addEventListener("message", listener);
+
+    return () => {
+      events.removeEventListener("message", listener);
+    };
+
+    function listener(e: MessageEvent<any>) {
       const msg = JSON.parse(e.data);
       if (msg.isTyping) {
         if (typing) {
@@ -54,7 +61,7 @@ export default function Chat(
         body: msg.message,
         icon: msg.from.avatar_url,
       });
-    });
+    }
   }, [login]);
 
   useEffect(() => {
@@ -109,7 +116,11 @@ export default function Chat(
   );
 }
 
-function ChatInput({ input, onInput, onSend }) {
+function ChatInput({ input, onInput, onSend }: {
+  input: string,
+  onInput: (input: string) => void;
+  onSend: () => void
+}) {
   return (
     <div
       className={tw
@@ -121,7 +132,7 @@ function ChatInput({ input, onInput, onSend }) {
         className={tw
           `block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700`}
         value={input}
-        onInput={(e) => onInput(e.target.value)}
+        onInput={(e) => onInput(e.currentTarget.value)}
         onKeyDown={(e) => e.key === "Enter" && onSend()}
       />
       <button onClick={onSend}>

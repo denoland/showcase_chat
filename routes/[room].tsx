@@ -16,7 +16,7 @@ interface Data {
 
 export const handler: Handler<Data> = async (
   req: Request,
-  ctx: HandlerContext,
+  ctx: HandlerContext<Data>,
 ): Promise<Response> => {
   // Get cookie from request header and parse it
   const accessToken = getCookies(req.headers)["deploy_chat_token"];

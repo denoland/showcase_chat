@@ -1,10 +1,20 @@
 /** @jsx h */
-import { h, tw, useReducer } from "../client_deps.ts";
-import { getCookies, HandlerContext, supabase } from "../server_deps.ts";
+import { ComponentChildren, h, PageProps, tw } from "../client_deps.ts";
+import {
+  getCookies,
+  Handler,
+  HandlerContext,
+  supabase,
+} from "../server_deps.ts";
 import AddRoom from "../islands/AddRoom.tsx";
-import Chat from "../islands/Chat.tsx";
+import Chat, { Message, User } from "../islands/Chat.tsx";
 
-export const handler = async (
+interface Data {
+  messages: Message[];
+  login: User;
+}
+
+export const handler: Handler<Data> = async (
   req: Request,
   ctx: HandlerContext,
 ): Promise<Response> => {
@@ -22,7 +32,7 @@ export const handler = async (
     return new Response(login.error.message, { status: 400 });
   }
 
-  if (isNaN(ctx.params.room)) {
+  if (isNaN(+ctx.params.room)) {
     return new Response("Invalid room id", { status: 400 });
   }
 
@@ -38,12 +48,12 @@ export const handler = async (
   return ctx.render({ messages: messages.data, login: login.data[0] });
 };
 
-export default function Room({ data, params }) {
+export default function Room({ data, params }: PageProps<Data>) {
   return (
     <div>
       <Sidebar>
         <Chat
-          room={params.room}
+          room={+params.room}
           initialMessages={data.messages}
           login={data.login}
         />
@@ -52,7 +62,7 @@ export default function Room({ data, params }) {
   );
 }
 
-function Sidebar({ children }) {
+function Sidebar({ children }: { children: ComponentChildren }) {
   return (
     <div className={tw`flex h-screen pb-16`}>
       <div
@@ -110,7 +120,7 @@ function Sidebar({ children }) {
   );
 }
 
-function Header({ children, data }) {
+function Header({ children, data }: any) {
   return (
     <ul className={tw`flex p-2 justify-between`}>
       <li className={tw`mr-6`}>
@@ -137,7 +147,9 @@ function Header({ children, data }) {
   );
 }
 
-function Link({ children, href }) {
+function Link(
+  { children, href }: { href: string; children: ComponentChildren },
+) {
   return (
     <a
       href={href}

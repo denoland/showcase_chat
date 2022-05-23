@@ -60,7 +60,7 @@ function Modal({ close }: { close: () => void }) {
                       name="roomName"
                       id="roomName"
                       value={roomName}
-                      onChange={(e) => setRoomName(e.target.value)}
+                      onChange={(e) => setRoomName(e.currentTarget.value)}
                       className={tw
                         `shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md`}
                       placeholder="Example"

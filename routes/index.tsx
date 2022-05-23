@@ -1,13 +1,11 @@
 /** @jsx h */
 import { h, PageProps, tw } from "../client_deps.ts";
 import {
-  createOAuthUserAuth,
   getCookies,
   HandlerContext,
   setCookie,
   supabase,
 } from "../server_deps.ts";
-import Room from "./[room].tsx";
 
 export async function handler(
   req: Request,

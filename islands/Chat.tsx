@@ -8,12 +8,12 @@ import {
   useState,
 } from "../client_deps.ts";
 
-interface User {
+export interface User {
   login: string;
   avatar_url: string;
 }
 
-interface Message {
+export interface Message {
   message: string;
   from: User;
 }
@@ -22,7 +22,7 @@ export default function Chat(
   { room, initialMessages, login }: {
     room: number;
     initialMessages: Message[];
-    login: string;
+    login: User;
   },
 ) {
   const messagesContainer = useRef<HTMLDivElement>(null);

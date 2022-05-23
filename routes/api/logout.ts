@@ -4,7 +4,12 @@ export const handler = async (
   req: Request,
   _ctx: HandlerContext,
 ): Promise<Response> => {
-  const response = Response.redirect(new URL(req.url).origin);
-  deleteCookie(response.headers, "deploy_access_token");
-  return response;
+  const headers = new Headers({
+    "location": new URL(req.url).origin,
+  })
+  deleteCookie(headers, "deploy_access_token");
+  return new Response(null, {
+    status: 302,
+    headers,
+  });
 };

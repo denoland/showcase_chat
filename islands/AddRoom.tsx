@@ -48,9 +48,16 @@ function Modal({ close }: { close: () => void }) {
           : (
             <div className={tw`bg-white shadow sm:rounded-lg`}>
               <div className={tw`px-4 py-5 sm:p-6`}>
-                <h3 className={tw`text-lg leading-6 font-medium text-gray-900`}>
-                  Create a room
-                </h3>
+                <div className={tw`flex justify-between`}>
+                  <h3
+                    className={tw`text-lg leading-6 font-medium text-gray-900`}
+                  >
+                    Create a room
+                  </h3>
+                  <button className={tw`text-xl`} onClick={() => close()}>
+                    &times;
+                  </button>
+                </div>
                 <div className={tw`mt-5 sm:flex sm:items-center`}>
                   <div className={tw`w-full sm:max-w-xs`}>
                     <label htmlFor="roomName" className={tw`sr-only`}>

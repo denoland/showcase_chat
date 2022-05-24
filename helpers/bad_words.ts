@@ -1,3 +1,4 @@
+import { ResourceLoader } from "./loader.ts";
 const defaultBadListUrl =
   "https://raw.githubusercontent.com/TrentonGage11/Google-profanity-words/209d0a75ae78dd8da6a38d2cb12935fd78d3e810/list.txt";
 
@@ -14,50 +15,25 @@ export interface BadWordsCleaner {
 }
 
 export class BadWordsCleanerLoader {
-  readonly #loadFunc: () => Promise<string>;
-  readonly #getTime: () => number;
-
-  #instance: BadWordsCleaner | undefined;
-  #loadPromise: Promise<void> | undefined;
-  #errResetTime: number | undefined;
+  #resourceLoader: ResourceLoader<BadWordsCleaner>;
 
   constructor(loadFunc = loadBadWords, getTime = () => Date.now()) {
-    this.#loadFunc = loadFunc;
-    this.#getTime = getTime;
+    this.#resourceLoader = new ResourceLoader({
+      load: async () => {
+        const text = await loadFunc();
+        return new TextBadWordsCleaner(text);
+      },
+      getTime,
+    });
   }
 
   async getInstance() {
-    if (this.#errResetTime && this.#getTime() > this.#errResetTime) {
-      this.#instance = undefined;
-      this.#errResetTime = undefined;
+    try {
+      return await this.#resourceLoader.getInstance();
+    } catch (err) {
+      console.log("Error loading bad words list.", err);
+      return new IdentityBadWordsCleaner();
     }
-
-    if (!this.#instance) {
-      try {
-        await this.#getLoadPromise();
-      } catch (err) {
-        console.error("Error loading bad words list.", err);
-        // try again in one minute
-        this.#errResetTime = this.#getTime() + 1_000 * 60;
-        // don't ever fail on this not loading... fallback to
-        // not moderating bad words
-        this.#instance = new IdentityBadWordsCleaner();
-      }
-    }
-    return this.#instance!;
-  }
-
-  #getLoadPromise() {
-    if (!this.#loadPromise) {
-      this.#loadPromise = this.#loadFunc()
-        .then((text) => {
-          this.#instance = new TextBadWordsCleaner(text);
-        })
-        .finally(() => {
-          this.#loadPromise = undefined;
-        });
-    }
-    return this.#loadPromise;
   }
 }
 
@@ -93,3 +69,5 @@ class TextBadWordsCleaner implements BadWordsCleaner {
     return text;
   }
 }
+
+export const badWordsCleanerLoader = new BadWordsCleanerLoader();

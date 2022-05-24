@@ -1,6 +1,7 @@
 /** @jsx h */
 /** @jsxFrag Fragment */
 import { Fragment, h, IS_BROWSER, tw, useState } from "../client_deps.ts";
+import { server } from "../communication/server.ts";
 
 function Modal({ close }: { close: () => void }) {
   const [roomName, setRoomName] = useState("");
@@ -70,21 +71,16 @@ function Modal({ close }: { close: () => void }) {
                     className={tw
                       `mt-3 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm`}
                     onClick={async () => {
-                      console.log(
-                        new URL("/api/create_room", location.origin).href,
-                      );
-                      const create = fetch(
-                        new URL("/api/create_room", location.origin).href,
-                        {
-                          method: "POST",
-                          body: roomName,
-                        },
-                      );
+                      const create = server.createRoom(roomName);
                       setSubmitting(true);
-                      const res = await create;
-                      console.log(res);
-                      close();
-                      location.pathname = "/" + await res.text();
+                      try {
+                        const roomId = await create;
+                        close();
+                        location.pathname = "/" + roomId;
+                      } catch (err) {
+                        setSubmitting(false);
+                        alert(`Cannot create room: ${err.message}`);
+                      }
                     }}
                   >
                     Create

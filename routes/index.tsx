@@ -1,11 +1,9 @@
 /** @jsx h */
 import { h, PageProps, tw } from "../client_deps.ts";
-import {
-  getCookies,
-  HandlerContext,
-  setCookie,
-  supabase,
-} from "../server_deps.ts";
+import { getCookies, HandlerContext, setCookie } from "../server_deps.ts";
+import { database } from "../communication/database.ts";
+import { gitHubApi } from "../communication/github.ts";
+import type { RoomView } from "../communication/types.ts";
 
 export async function handler(
   req: Request,
@@ -14,17 +12,9 @@ export async function handler(
   // Get cookie from request header and parse it
   const maybeAccessToken = getCookies(req.headers)["deploy_chat_token"];
   if (maybeAccessToken) {
-    const { data, error } = await supabase
-      .from("users")
-      .select("login,avatar_url")
-      .eq("access_token", maybeAccessToken);
-    if (error) {
-      console.log(error);
-      return new Response(error.message, { status: 400 });
-    }
-
-    if (data.length !== 0) {
-      return ctx.render({ rooms: await loadRooms() });
+    const user = await database.getUserByAccessToken(maybeAccessToken);
+    if (!user) {
+      return ctx.render({ rooms: await database.getRooms() });
     }
   }
 
@@ -35,74 +25,30 @@ export async function handler(
     return ctx.render(false);
   }
 
-  const request = await fetch("https://github.com/login/oauth/access_token", {
-    method: "POST",
-    body: JSON.stringify({
-      client_id: Deno.env.get("CLIENT_ID"),
-      client_secret: Deno.env.get("CLIENT_SECRET"),
-      code,
-    }),
-    headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-    },
+  const accessToken = await gitHubApi.getAccessToken(code);
+  const userData = await gitHubApi.getUserData(accessToken);
+
+  await database.insertUser({
+    userId: userData.userId,
+    userName: userData.userName,
+    accessToken,
+    avatarUrl: userData.avatarUrl,
   });
-  const { access_token } = await request.json();
-
-  if (!access_token) {
-    return ctx.render(false);
-  }
-
-  // Get user info
-  const userInfoRequest = await fetch("https://api.github.com/user", {
-    headers: {
-      Authorization: `token ${access_token}`,
-    },
-  });
-  const { login, id, avatar_url } = await userInfoRequest.json();
-
-  // Insert user into database
-  const { data, error } = await supabase
-    .from("users")
-    .upsert([
-      {
-        login,
-        id,
-        avatar_url,
-        access_token,
-      },
-    ], { returning: "minimal" });
-  if (error) {
-    console.log(error);
-    return new Response(error.message, { status: 400 });
-  }
 
   const response = await ctx.render({
-    rooms: await loadRooms(),
+    rooms: await database.getRooms(),
   });
   setCookie(response.headers, {
     name: "deploy_chat_token",
-    value: access_token,
+    value: accessToken,
     maxAge: 60 * 60 * 24 * 7,
     httpOnly: true,
   });
   return response;
 }
 
-async function loadRooms() {
-  const rooms = await supabase.from("rooms_with_activity").select(
-    "id,name,last_message_at",
-  );
-  if (rooms.error) {
-    throw new Error(rooms.error.message);
-  }
-  return rooms.data;
-}
-
 export default function Main(
-  { url, data }: PageProps<
-    { rooms: { id: number; name: string; last_message_at: string }[] }
-  >,
+  { url, data }: PageProps<{ rooms: RoomView[] }>,
 ) {
   if (data) {
     // Already logged in. Show list of rooms.
@@ -114,20 +60,20 @@ export default function Main(
         <ul role="list" className={tw`divide-y divide-gray-200`}>
           {data.rooms.map((room) => {
             return (
-              <li key={room.id} className={tw`py-4 flex`}>
+              <li key={room.roomId} className={tw`py-4 flex`}>
                 <a
-                  href={new URL(room.id.toString(), url).href}
+                  href={new URL(room.roomId.toString(), url).href}
                   className={tw`ml-3 block`}
                 >
                   <p className={tw`text-sm font-medium text-gray-900`}>
                     {room.name}
                   </p>
                   <p className={tw`text-sm text-gray-500`}>
-                    {room.last_message_at
+                    {room.lastMessageAt
                       ? new Intl.DateTimeFormat("en-US", {
                         dateStyle: "long",
                         timeStyle: "medium",
-                      }).format(new Date(room.last_message_at).getTime())
+                      }).format(new Date(room.lastMessageAt).getTime())
                       : "No messages"}
                   </p>
                 </a>

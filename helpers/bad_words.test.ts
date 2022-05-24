@@ -1,4 +1,4 @@
-import { assertEquals } from "../../test_deps.ts";
+import { assertEquals } from "../test_deps.ts";
 import { BadWordsCleanerLoader } from "./bad_words.ts";
 
 Deno.test("clean bad words", async () => {
@@ -31,7 +31,7 @@ Deno.test("loading bad words", async () => {
   assertEquals((await loader.getInstance()).clean("words"), "words");
 
   // increase the time to equal the reset threshold
-  currentTime += 1_000 * 60;
+  currentTime += 1_000 * 10;
   assertEquals((await loader.getInstance()).clean("words"), "words");
 
   // increase the time to be above the threshold and it should reload
@@ -40,7 +40,7 @@ Deno.test("loading bad words", async () => {
 
   // should not reload and will use the cached list because
   // it has loaded successfully before
-  currentTime += 1_000 * 60 * 5;
+  currentTime += 1_000 * 10 * 5;
   loadFunc = () => Promise.reject(new Error("FAIL"));
   const cleaner2 = await loader.getInstance();
   assertEquals(cleaner2.clean("words"), "****s");

@@ -1,17 +1,14 @@
 /** @jsx h */
 import { ComponentChildren, h, PageProps, tw } from "../client_deps.ts";
-import {
-  getCookies,
-  Handler,
-  HandlerContext,
-  supabase,
-} from "../server_deps.ts";
+import { getCookies, Handler, HandlerContext } from "../server_deps.ts";
+import { database } from "../communication/database.ts";
 import AddRoom from "../islands/AddRoom.tsx";
-import Chat, { Message, User } from "../islands/Chat.tsx";
+import Chat from "../islands/Chat.tsx";
+import type { MessageView, UserView } from "../communication/types.ts";
 
 interface Data {
-  messages: Message[];
-  login: User;
+  messages: MessageView[];
+  user: UserView;
 }
 
 export const handler: Handler<Data> = async (
@@ -23,29 +20,19 @@ export const handler: Handler<Data> = async (
   if (!accessToken) {
     return Response.redirect(new URL(req.url).origin);
   }
-  const login = await supabase
-    .from("users")
-    .select("login,avatar_url")
-    .eq("access_token", accessToken);
-  if (login.error) {
-    console.log(login.error);
-    return new Response(login.error.message, { status: 400 });
-  }
-
+  const user = await database.getUserByAccessTokenOrThrow(accessToken);
   if (isNaN(+ctx.params.room)) {
     return new Response("Invalid room id", { status: 400 });
   }
 
-  const messages = await supabase
-    .from("messages")
-    .select("message,from(login,avatar_url)")
-    .eq("room", +ctx.params.room);
-  if (messages.error) {
-    console.log(messages.error);
-    return new Response(messages.error.message, { status: 400 });
-  }
-
-  return ctx.render({ messages: messages.data, login: login.data[0] });
+  const messages = await database.getRoomMessages(+ctx.params.room);
+  return ctx.render({
+    messages,
+    user: {
+      name: user.userName,
+      avatarUrl: user.avatarUrl,
+    },
+  });
 };
 
 export default function Room({ data, params }: PageProps<Data>) {
@@ -53,9 +40,9 @@ export default function Room({ data, params }: PageProps<Data>) {
     <div>
       <Sidebar>
         <Chat
-          room={+params.room}
+          roomId={+params.room}
           initialMessages={data.messages}
-          login={data.login}
+          login={data.user}
         />
       </Sidebar>
     </div>

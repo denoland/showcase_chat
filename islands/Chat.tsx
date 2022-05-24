@@ -7,61 +7,53 @@ import {
   useRef,
   useState,
 } from "../client_deps.ts";
-
-export interface User {
-  login: string;
-  avatar_url: string;
-}
-
-export interface Message {
-  message: string;
-  from: User;
-}
+import type { MessageView, UserView } from "../communication/types.ts";
+import { server } from "../communication/server.ts";
 
 export default function Chat(
-  { room, initialMessages, login }: {
-    room: number;
-    initialMessages: Message[];
-    login: User;
+  { roomId, initialMessages, login }: {
+    roomId: number;
+    initialMessages: MessageView[];
+    login: UserView;
   },
 ) {
   const messagesContainer = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
-  const [messages, addMessage] = useReducer<Message[], Message>(
+  const [messages, addMessage] = useReducer<MessageView[], MessageView>(
     (msgs, msg) => [...msgs, msg],
     initialMessages,
   );
   const [typing, setTyping] = useState<
-    { user: User; interval: number } | null
+    { user: UserView; interval: number } | null
   >(null);
 
   useEffect(() => {
     Notification.requestPermission();
-    const events = new EventSource("/api/connect/" + room);
-    events.addEventListener("message", listener);
+
+    const subscription = server.subscribeMessages(roomId, (msg) => {
+      switch (msg.kind) {
+        case "isTyping":
+          if (typing) {
+            clearInterval(typing.interval);
+          }
+          const interval = setTimeout(() => {
+            setTyping(null);
+          }, 5000);
+          setTyping({ user: msg.from, interval });
+          break;
+        case "text":
+          addMessage(msg);
+          new Notification(`New message from ${msg.from.name}`, {
+            body: msg.message,
+            icon: msg.from.avatarUrl,
+          });
+          break;
+      }
+    });
 
     return () => {
-      events.removeEventListener("message", listener);
+      subscription.unsubscribe();
     };
-
-    function listener(e: MessageEvent<any>) {
-      const msg = JSON.parse(e.data);
-      if (msg.isTyping) {
-        if (typing) {
-          clearInterval(typing.interval);
-        }
-        const interval = setTimeout(() => {
-          setTyping(null);
-        }, 5000);
-        setTyping({ user: msg.from, interval });
-        return;
-      }
-      addMessage(msg);
-      new Notification(`New message from ${msg.from.login}`, {
-        body: msg.message,
-        icon: msg.from.avatar_url,
-      });
-    }
   }, [login]);
 
   useEffect(() => {
@@ -75,13 +67,7 @@ export default function Chat(
     if (input === "") {
       return;
     }
-    fetch("/api/send", {
-      method: "POST",
-      body: JSON.stringify({
-        message: input,
-        room,
-      }),
-    });
+    server.sendMessage(roomId, input);
     setInput("");
   };
 
@@ -94,7 +80,7 @@ export default function Chat(
         {messages.map((msg) => <Message message={msg} />)}
         {typing && (
           <div className={tw`py-0.5 pr-16 pl-4 text-sm text-gray-600`}>
-            {typing.user.login} is typing...
+            {typing.user.name} is typing...
           </div>
         )}
       </div>
@@ -102,13 +88,7 @@ export default function Chat(
         input={input}
         onInput={(input) => {
           setInput(input);
-          fetch("/api/send", {
-            method: "POST",
-            body: JSON.stringify({
-              room,
-              isTyping: true,
-            }),
-          });
+          server.sendIsTyping(roomId);
         }}
         onSend={send}
       />
@@ -150,7 +130,7 @@ function ChatInput({ input, onInput, onSend }: {
   );
 }
 
-function Message({ message }: { message: Message }) {
+function Message({ message }: { message: MessageView }) {
   return (
     <div
       className={tw
@@ -161,15 +141,15 @@ function Message({ message }: { message: Message }) {
           `overflow-hidden relative mt-0.5 mr-4 w-10 min-w-fit h-10 rounded-full`}
       >
         <img
-          src={message.from.avatar_url}
-          alt={`${message.from.login}'s avatar`}
+          src={message.from.avatarUrl}
+          alt={`${message.from.name}'s avatar`}
           className={tw`absolute w-full h-full object-cover`}
         />
       </div>
       <div>
         <p className={tw`flex items-baseline`}>
           <span className={tw`mr-2 font-medium`}>
-            {message.from.login}
+            {message.from.name}
           </span>
         </p>
         <p className={tw`text-gray-800`}>{message.message}</p>

@@ -37,7 +37,7 @@ SUPABASE_DB_PASSWORD=xyz123
 and fire up the server:
 
 ```
-deno run -A --no-check main.ts
+deno task start
 ```
 
 #### Database Schema

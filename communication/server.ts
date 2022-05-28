@@ -52,6 +52,7 @@ export class Server {
     });
     const text = await res.text();
     if (!res.ok) {
+      alert(text); // Nothing fancy
       throw new Error(text);
     }
     return text;

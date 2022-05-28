@@ -7,16 +7,24 @@ on Deno Deploy.
 
 To get started, setup your `.env` with Supabase and Github OAuth credentials:
 
-
-To setup a [Github OAuth App](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps)
+To setup a
+[Github OAuth App](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps)
 
 - Go to https://github.com/settings/applications/new
 - Set `Application name` to `Deploy Chat Example`
-- Set `Homepage URL` to your Deno Deploy project URL. (eg: `chat-app-example.deno.dev`)
-- Set `Authorization callback URL` to `http://chat-app-example.deno.dev` or localhost for development.
+- Set `Homepage URL` to your Deno Deploy project URL. (eg:
+  `chat-app-example.deno.dev`)
+- Set `Authorization callback URL` to `http://chat-app-example.deno.dev` or
+  localhost for development.
 - Paste `Client ID` and `Client Secret` in `.env`
 
-To setup a Supabase project
+Create a Supabase project
+
+- Go to app.supabase.io
+- Click on "New Project".
+- Enter project details and wait for the database to launch.
+- Go to the SQL Editor and run the SQL from below
+- Grab the URL and anon key from the "Settings" > "API"
 
 ```
 CLIENT_ID=abc
@@ -32,7 +40,7 @@ and fire up the server:
 deno run -A --no-check main.ts
 ```
 
-In supabase dashboard, go to the SQL editor and run this query:
+#### Database Schema
 
 ```sql
 create table users (

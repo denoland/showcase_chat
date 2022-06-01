@@ -1,5 +1,6 @@
 /** @jsx h */
-import { h, PageProps, tw } from "../client_deps.ts";
+/** @jsxFrag Fragment */
+import { Fragment, h, PageProps, tw, twas } from "../client_deps.ts";
 import { getCookies, HandlerContext, setCookie } from "../server_deps.ts";
 import { database } from "../communication/database.ts";
 import { gitHubApi } from "../communication/github.ts";
@@ -53,49 +54,101 @@ export default function Main(
   if (data) {
     // Already logged in. Show list of rooms.
     return (
-      <div
-        className={tw
-          `flex justify-center content-center items-center min-h-screen`}
-      >
-        <ul role="list" className={tw`divide-y divide-gray-200`}>
-          {data.rooms.map((room) => {
-            return (
-              <li key={room.roomId} className={tw`py-4 flex`}>
+      <>
+        <img
+          src="/room_list.png"
+          alt="bg"
+          class={tw
+            `absolute top-0 left-0 w-full min-h-screen -z-10 bg-gray-900`}
+        />
+        <div
+          class={tw`flex justify-center items-center h-screen text-gray-100`}
+        >
+          <div>
+            <div class={tw`mb-16 mx-8 text-center`}>
+              <img
+                class={tw`h-14 mx-auto mb-6`}
+                src="/logo.svg"
+                alt="Deno Logo"
+              />
+              <span class={tw`text-3xl font-bold mb-2`}>Deno Chat</span>
+              <br />
+              <span class={tw`text-lg`}>A minimal chat platform template.</span>
+              <br />
+              <span class={tw`text-lg`}>
+                It uses <span class={tw`font-bold underline`}>Fresh</span> +
+                {" "}
+                <span class={tw`font-bold underline`}>Supabase</span> +{" "}
+                <span class={tw`font-bold underline`}>twind</span> +{" "}
+                <span class={tw`font-bold underline`}>BroadcastChannel</span>
+                {" "}
+                API on Deno Deploy.
+              </span>
+            </div>
+            <ul role="list" class={tw`max-h-96 space-y-4.5`}>
+              <div class={tw`max-h-80 overflow-scroll space-y-4.5`}>
+                {data.rooms.map((room) => {
+                  return (
+                    <li key={room.roomId}>
+                      <a
+                        href={new URL(room.roomId.toString(), url).href}
+                        class={tw
+                          `grid grid-cols-3 items-center bg-white rounded-full h-18`}
+                      >
+                        <div />
+                        <p
+                          class={tw
+                            `text-xl font-bold text-gray-900 justify-self-center`}
+                        >
+                          {room.name}
+                        </p>
+                        <p
+                          class={tw
+                            `font-medium text-gray-400 mr-8 justify-self-end`}
+                        >
+                          {room.lastMessageAt
+                            ? twas(new Date(room.lastMessageAt).getTime())
+                            : "No messages"}
+                        </p>
+                      </a>
+                    </li>
+                  );
+                })}
+              </div>
+              <li>
                 <a
-                  href={new URL(room.roomId.toString(), url).href}
-                  className={tw`ml-3 block`}
+                  href="/new"
+                  class={tw
+                    `flex justify-center items-center bg-white rounded-full h-18 mx-18`}
                 >
-                  <p className={tw`text-sm font-medium text-gray-900`}>
-                    {room.name}
-                  </p>
-                  <p className={tw`text-sm text-gray-500`}>
-                    {room.lastMessageAt
-                      ? new Intl.DateTimeFormat("en-US", {
-                        dateStyle: "long",
-                        timeStyle: "medium",
-                      }).format(new Date(room.lastMessageAt).getTime())
-                      : "No messages"}
-                  </p>
+                  <div
+                    class={tw`w-8 h-8 flex justify-center items-center mr-2.5`}
+                  >
+                    <img src="/plus.svg" alt="Plus" />
+                  </div>
+                  <span class={tw`text-xl font-bold text-gray-900`}>
+                    New Room
+                  </span>
                 </a>
               </li>
-            );
-          })}
-        </ul>
-      </div>
+            </ul>
+          </div>
+        </div>
+      </>
     );
   }
   return (
     <div
-      className={tw`min-h-screen flex justify-center items-center flex-col`}
+      class={tw`min-h-screen flex justify-center items-center flex-col`}
     >
       <a
         href="/api/login"
-        className={tw
+        class={tw
           `bg-gray-900 text-gray-100 hover:text-white shadow font-bold text-sm py-3 px-4 rounded flex justify-start items-center cursor-pointer mt-2`}
       >
         <svg
           viewBox="0 0 24 24"
-          className={tw`fill-current mr-4 w-6 h-6`}
+          class={tw`fill-current mr-4 w-6 h-6`}
           xmlns="http://www.w3.org/2000/svg"
         >
           <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />

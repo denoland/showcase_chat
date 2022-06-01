@@ -1,7 +1,10 @@
 /** @jsx h */
+/** @jsxFrag Fragment */
 import {
+  Fragment,
   h,
   tw,
+  twas,
   useEffect,
   useReducer,
   useRef,
@@ -11,8 +14,9 @@ import type { MessageView, UserView } from "../communication/types.ts";
 import { server } from "../communication/server.ts";
 
 export default function Chat(
-  { roomId, initialMessages, login }: {
+  { roomId, roomName, initialMessages, login }: {
     roomId: number;
+    roomName: string;
     initialMessages: MessageView[];
     login: UserView;
   },
@@ -32,15 +36,19 @@ export default function Chat(
 
     const subscription = server.subscribeMessages(roomId, (msg) => {
       switch (msg.kind) {
-        case "isTyping":
+        case "isTyping": {
           if (typing) {
             clearInterval(typing.interval);
           }
           const interval = setTimeout(() => {
             setTyping(null);
           }, 5000);
-          setTyping({ user: msg.from, interval });
+          setTyping({
+            user: msg.from,
+            interval,
+          });
           break;
+        }
         case "text":
           addMessage(msg);
           new Notification(`New message from ${msg.from.name}`, {
@@ -72,27 +80,48 @@ export default function Chat(
   };
 
   return (
-    <div className={tw`flex flex-1 h-screen`}>
+    <>
       <div
-        className={tw`mb-20 overflow-y-scroll w-full`}
-        ref={messagesContainer}
+        class={tw`w-1/2 h-2/3 rounded-2xl mb-5 pl-6 flex flex-col pt-4 pb-2`}
       >
-        {messages.map((msg) => <Message message={msg} />)}
-        {typing && (
-          <div className={tw`py-0.5 pr-16 pl-4 text-sm text-gray-600`}>
-            {typing.user.name} is typing...
-          </div>
-        )}
+        <div
+          class={tw
+            `h-8 flex-none pl-1 pr-7 mb-16 flex justify-between items-center`}
+        >
+          <a href="/">
+            <img src="/arrow.svg" alt="Left Arrow" />
+          </a>
+          <div class={tw`font-medium text-lg`}>{roomName}</div>
+          <div />
+        </div>
+
+        <div
+          class={tw`flex-auto overflow-y-scroll`}
+          ref={messagesContainer}
+        >
+          {messages.map((msg) => <Message message={msg} />)}
+        </div>
+
+        <div class={tw`h-6 mt-1`}>
+          {typing && (
+            <div class={tw`text-sm text-gray-400`}>
+              <span class={tw`text-gray-800`}>{typing.user.name}</span>{" "}
+              is typing...
+            </div>
+          )}
+        </div>
       </div>
-      <ChatInput
-        input={input}
-        onInput={(input) => {
-          setInput(input);
-          server.sendIsTyping(roomId);
-        }}
-        onSend={send}
-      />
-    </div>
+      <div class={tw`w-1/2 h-16 flex-none rounded-full flex items-center`}>
+        <ChatInput
+          input={input}
+          onInput={(input) => {
+            setInput(input);
+            server.sendIsTyping(roomId);
+          }}
+          onSend={send}
+        />
+      </div>
+    </>
   );
 }
 
@@ -102,23 +131,20 @@ function ChatInput({ input, onInput, onSend }: {
   onSend: () => void;
 }) {
   return (
-    <div
-      className={tw
-        `flex items-center justify-between border-t border-gray-300 bg-white fixed inset-x-0 bottom-0 p-4 z-40`}
-    >
+    <>
       <input
         type="text"
         placeholder="Message"
-        className={tw
-          `block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700`}
+        class={tw
+          `block mx-6 w-full bg-transparent outline-none focus:text-gray-700`}
         value={input}
         onInput={(e) => onInput(e.currentTarget.value)}
         onKeyDown={(e) => e.key === "Enter" && onSend()}
       />
       <button onClick={onSend}>
         <svg
-          className={tw
-            `w-5 h-5 text-gray-500 origin-center transform rotate-90`}
+          class={tw
+            `w-5 h-5 text-gray-500 origin-center transform rotate-90 mr-6`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -126,33 +152,28 @@ function ChatInput({ input, onInput, onSend }: {
           <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
         </svg>
       </button>
-    </div>
+    </>
   );
 }
 
 function Message({ message }: { message: MessageView }) {
   return (
-    <div
-      className={tw
-        `flex py-0.5 pr-16 pl-4 mt-[17px] leading-[22px] hover:bg-gray-950/[.07]`}
-    >
-      <div
-        className={tw
-          `overflow-hidden relative mt-0.5 mr-4 w-10 min-w-fit h-10 rounded-full`}
-      >
-        <img
-          src={message.from.avatarUrl}
-          alt={`${message.from.name}'s avatar`}
-          className={tw`absolute w-full h-full object-cover`}
-        />
-      </div>
+    <div class={tw`flex mb-4.5`}>
+      <img
+        src={message.from.avatarUrl}
+        alt={`${message.from.name}'s avatar`}
+        class={tw`mr-4 w-9 h-9 rounded-full`}
+      />
       <div>
-        <p className={tw`flex items-baseline`}>
-          <span className={tw`mr-2 font-medium`}>
+        <p class={tw`flex items-baseline mb-1.5`}>
+          <span class={tw`mr-2 font-bold`}>
             {message.from.name}
           </span>
+          <span class={tw`text-xs text-gray-400 font-extralight`}>
+            {twas(new Date(message.createdAt).getTime())}
+          </span>
         </p>
-        <p className={tw`text-gray-800`}>{message.message}</p>
+        <p class={tw`text-sm text-gray-800`}>{message.message}</p>
       </div>
     </div>
   );

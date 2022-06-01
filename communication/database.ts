@@ -78,6 +78,16 @@ export class Database {
     }));
   }
 
+  async getRoomName(roomId: number): Promise<string> {
+    const { data, error } = await this.#client.from("rooms")
+      .select("name")
+      .eq("id", roomId);
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data[0].name;
+  }
+
   async ensureRoom(name: string) {
     const insert = await this.#client.from("rooms").insert([{ name }], {
       upsert: false,
@@ -116,7 +126,7 @@ export class Database {
   async getRoomMessages(roomId: number): Promise<MessageView[]> {
     const { data, error } = await this.#client
       .from("messages")
-      .select("message,from(login,avatar_url)")
+      .select("message,from(login,avatar_url),created_at")
       .eq("room", roomId);
     if (error) {
       throw new Error(error.message);
@@ -127,6 +137,7 @@ export class Database {
         name: m.from.login,
         avatarUrl: m.from.avatar_url,
       },
+      createdAt: m.created_at,
     }));
   }
 }

@@ -1,9 +1,6 @@
-import { deleteCookie, HandlerContext } from "../../server_deps.ts";
+import { deleteCookie } from "../../server_deps.ts";
 
-export function handler(
-  req: Request,
-  _ctx: HandlerContext,
-): Promise<Response> {
+export function handler(req: Request): Response {
   const headers = new Headers({
     "location": new URL(req.url).origin,
   });

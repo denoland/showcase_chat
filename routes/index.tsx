@@ -66,6 +66,11 @@ export default function Main(
         >
           <div>
             <div className={tw`mb-16 text-center`}>
+              <img
+                className={tw`h-14 mx-auto mb-6`}
+                src="/logo.svg"
+                alt="Deno Logo"
+              />
               <h1 class={tw`text-3xl font-bold mb-2`}>Deno Chat</h1>
               <p class={tw`text-lg`}>A minimal chat platform template.</p>
               <p class={tw`text-lg`}>

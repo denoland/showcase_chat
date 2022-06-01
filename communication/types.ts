@@ -2,10 +2,8 @@ export type ChannelMessage =
   | RoomTextChannelMessage
   | RoomIsTypingChannelMessage;
 
-export interface RoomTextChannelMessage {
+export interface RoomTextChannelMessage extends MessageView {
   kind: "text";
-  message: string;
-  from: UserView;
 }
 
 export interface RoomIsTypingChannelMessage {
@@ -21,6 +19,7 @@ export interface UserView {
 export interface MessageView {
   message: string;
   from: UserView;
+  createdAt: string;
 }
 
 export interface RoomView {

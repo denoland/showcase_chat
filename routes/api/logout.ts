@@ -1,6 +1,6 @@
 import { deleteCookie, HandlerContext } from "../../server_deps.ts";
 
-export async function handler(
+export function handler(
   req: Request,
   _ctx: HandlerContext,
 ): Promise<Response> {

@@ -1,5 +1,6 @@
 /** @jsx h */
-import { h, PageProps, tw } from "../client_deps.ts";
+/** @jsxFrag Fragment */
+import { Fragment, h, PageProps, tw } from "../client_deps.ts";
 import { getCookies, HandlerContext, setCookie } from "../server_deps.ts";
 import { database } from "../communication/database.ts";
 import { gitHubApi } from "../communication/github.ts";
@@ -53,35 +54,58 @@ export default function Main(
   if (data) {
     // Already logged in. Show list of rooms.
     return (
-      <div
-        className={tw
-          `flex justify-center content-center items-center min-h-screen`}
-      >
-        <ul role="list" className={tw`divide-y divide-gray-200`}>
-          {data.rooms.map((room) => {
-            return (
-              <li key={room.roomId} className={tw`py-4 flex`}>
-                <a
-                  href={new URL(room.roomId.toString(), url).href}
-                  className={tw`ml-3 block`}
-                >
-                  <p className={tw`text-sm font-medium text-gray-900`}>
-                    {room.name}
-                  </p>
-                  <p className={tw`text-sm text-gray-500`}>
-                    {room.lastMessageAt
-                      ? new Intl.DateTimeFormat("en-US", {
-                        dateStyle: "long",
-                        timeStyle: "medium",
-                      }).format(new Date(room.lastMessageAt).getTime())
-                      : "No messages"}
-                  </p>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <>
+        <img
+          src="/room_list.png"
+          alt="bg"
+          class={tw
+            `absolute top-0 left-0 w-full min-h-screen -z-10 bg-gray-900`}
+        />
+        <div
+          class={tw`flex justify-center items-center h-screen text-gray-100`}
+        >
+          <div>
+            <div className={tw`mb-16 text-center`}>
+              <h1 class={tw`text-3xl font-bold mb-2`}>Deno Chat</h1>
+              <p class={tw`text-lg`}>A minimal chat platform template.</p>
+              <p class={tw`text-lg`}>
+                It uses <span class={tw`font-bold underline`}>Fresh</span> +
+                {" "}
+                <span class={tw`font-bold underline`}>Supabase</span> +{" "}
+                <span class={tw`font-bold underline`}>twind</span> +{" "}
+                <span class={tw`font-bold underline`}>BroadcastChannel</span>
+                {" "}
+                API on Deno Deploy.
+              </p>
+            </div>
+            <ul role="list" class={tw`overflow-scroll max-h-96`}>
+              {data.rooms.map((room) => {
+                return (
+                  <li key={room.roomId} class={tw`mb-3`}>
+                    <a
+                      href={new URL(room.roomId.toString(), url).href}
+                      class={tw
+                        `flex justify-around items-center bg-white rounded-full h-20`}
+                    >
+                      <p class={tw`text-xl font-bold text-gray-900`}>
+                        {room.name}
+                      </p>
+                      <p class={tw`text-lg font-medium text-gray-400`}>
+                        {room.lastMessageAt
+                          ? new Intl.DateTimeFormat("en-US", {
+                            dateStyle: "long",
+                            timeStyle: "short",
+                          }).format(new Date(room.lastMessageAt).getTime())
+                          : "No messages"}
+                      </p>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      </>
     );
   }
   return (

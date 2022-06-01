@@ -5,6 +5,13 @@ const sheet = virtualSheet();
 sheet.reset();
 setup({
   sheet,
+  theme: {
+    extend: {
+      gridTemplateRows: {
+        "layout": "3rem auto 1.5rem",
+      },
+    },
+  },
 });
 
 export function render(ctx: RenderContext, render: RenderFn) {

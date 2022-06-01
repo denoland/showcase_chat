@@ -30,7 +30,11 @@ export async function handler(
   const badWordsCleaner = await badWordsCleanerLoader.getInstance();
   const message = emojify(badWordsCleaner.clean(data.message));
 
-  channel.sendText({ message: message, from });
+  channel.sendText({
+    message: message,
+    from,
+    createdAt: new Date().toISOString(),
+  });
   channel.close();
 
   await database.insertMessage({

@@ -85,41 +85,12 @@ export default function Main(
                 API on Deno Deploy.
               </span>
             </div>
-            <ul role="list" class={tw`max-h-96 space-y-4.5`}>
-              <div class={tw`max-h-80 overflow-scroll space-y-4.5`}>
-                {data.rooms.map((room) => {
-                  return (
-                    <li key={room.roomId}>
-                      <a
-                        href={new URL(room.roomId.toString(), url).href}
-                        class={tw
-                          `grid grid-cols-3 items-center bg-white rounded-full h-18`}
-                      >
-                        <div />
-                        <p
-                          class={tw
-                            `text-xl font-bold text-gray-900 justify-self-center`}
-                        >
-                          {room.name}
-                        </p>
-                        <p
-                          class={tw
-                            `font-medium text-gray-400 mr-8 justify-self-end`}
-                        >
-                          {room.lastMessageAt
-                            ? twas(new Date(room.lastMessageAt).getTime())
-                            : "No messages"}
-                        </p>
-                      </a>
-                    </li>
-                  );
-                })}
-              </div>
+            <ul role="list" class={tw`max-h-80 overflow-scroll space-y-4.5`}>
               <li>
                 <a
                   href="/new"
                   class={tw
-                    `flex justify-center items-center bg-white rounded-full h-18 mx-18`}
+                    `flex justify-center items-center bg-white rounded-full h-18`}
                 >
                   <div
                     class={tw`w-8 h-8 flex justify-center items-center mr-2.5`}
@@ -131,6 +102,34 @@ export default function Main(
                   </span>
                 </a>
               </li>
+
+              {data.rooms.map((room) => {
+                return (
+                  <li key={room.roomId}>
+                    <a
+                      href={new URL(room.roomId.toString(), url).href}
+                      class={tw
+                        `grid grid-cols-3 items-center bg-white rounded-full h-18`}
+                    >
+                      <div />
+                      <p
+                        class={tw
+                          `text-xl font-bold text-gray-900 justify-self-center`}
+                      >
+                        {room.name}
+                      </p>
+                      <p
+                        class={tw
+                          `font-medium text-gray-400 mr-8 justify-self-end`}
+                      >
+                        {room.lastMessageAt
+                          ? twas(new Date(room.lastMessageAt).getTime())
+                          : "No messages"}
+                      </p>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

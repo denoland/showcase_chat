@@ -85,7 +85,7 @@ export default function Main(
                 API on Deno Deploy.
               </span>
             </div>
-            <ul role="list" class={tw`max-h-80 overflow-scroll space-y-4.5`}>
+            <ul role="list" class={tw`max-h-[21.375rem] overflow-scroll space-y-4.5`}>
               <li>
                 <a
                   href="/new"

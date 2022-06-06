@@ -9,9 +9,9 @@ import {
 } from "../client_deps.ts";
 import { getCookies, Handler, HandlerContext } from "../server_deps.ts";
 import { database } from "../communication/database.ts";
-import AddRoom from "../islands/AddRoom.tsx";
 import Chat from "../islands/Chat.tsx";
 import type { MessageView, UserView } from "../communication/types.ts";
+import { Page } from "../helpers/Page.tsx";
 
 interface Data {
   messages: MessageView[];
@@ -49,33 +49,13 @@ export const handler: Handler<Data> = async (
 
 export default function Room({ data, params }: PageProps<Data>) {
   return (
-    <>
-      <img
-        src="/room.png"
-        alt="bg"
-        class={tw
-          `absolute top-0 left-0 w-full min-h-screen -z-10 overflow-hidden`}
-      />
+    <Page>
       <Chat
         roomId={+params.room}
         initialMessages={data.messages}
         roomName={data.roomName}
         login={data.user}
       />
-    </>
-  );
-}
-
-function Link(
-  { children, href }: { href: string; children: ComponentChildren },
-) {
-  return (
-    <a
-      href={href}
-      className={tw
-        `text-sm rounded flex justify-start items-center cursor-pointer`}
-    >
-      {children}
-    </a>
+    </Page>
   );
 }

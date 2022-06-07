@@ -12,8 +12,13 @@ export default function NewRoom() {
           <a href="/">
             <img src="/arrow.svg" alt="Left Arrow" />
           </a>
-          <div class={tw`font-medium text-lg`}>
-            <img src="/plus.svg" alt="Plus" /> New Room
+          <div class={tw`font-medium text-lg flex items-center`}>
+            <div
+              class={tw`w-6 h-6 flex justify-center items-center mr-1.5`}
+            >
+              <img src="/plus.svg" alt="Plus" />
+            </div>
+            New Room
           </div>
           <div />
         </div>

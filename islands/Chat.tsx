@@ -14,11 +14,11 @@ import type { MessageView, UserView } from "../communication/types.ts";
 import { server } from "../communication/server.ts";
 
 export default function Chat(
-  { roomId, roomName, initialMessages, login }: {
+  { roomId, roomName, initialMessages, user }: {
     roomId: number;
     roomName: string;
     initialMessages: MessageView[];
-    login: UserView;
+    user: UserView;
   },
 ) {
   const messagesContainer = useRef<HTMLDivElement>(null);
@@ -62,7 +62,7 @@ export default function Chat(
     return () => {
       subscription.unsubscribe();
     };
-  }, [login]);
+  }, [user]);
 
   useEffect(() => {
     const container = messagesContainer.current;

@@ -1,14 +1,8 @@
 /** @jsx h */
 /** @jsxFrag Fragment */
-import {
-  ComponentChildren,
-  Fragment,
-  h,
-  PageProps,
-  tw,
-} from "../client_deps.ts";
+import { Fragment, h, PageProps } from "../client_deps.ts";
 import { getCookies, Handler, HandlerContext } from "../server_deps.ts";
-import { database } from "../communication/database.ts";
+import { databaseLoader } from "../communication/database.ts";
 import Chat from "../islands/Chat.tsx";
 import type { MessageView, UserView } from "../communication/types.ts";
 import { Page } from "../helpers/Page.tsx";
@@ -28,6 +22,7 @@ export const handler: Handler<Data> = async (
   if (!accessToken) {
     return Response.redirect(new URL(req.url).origin);
   }
+  const database = await databaseLoader.getInstance();
   const user = await database.getUserByAccessTokenOrThrow(accessToken);
   if (isNaN(+ctx.params.room)) {
     return new Response("Invalid room id", { status: 400 });
@@ -54,7 +49,7 @@ export default function Room({ data, params }: PageProps<Data>) {
         roomId={+params.room}
         initialMessages={data.messages}
         roomName={data.roomName}
-        login={data.user}
+        user={data.user}
       />
     </Page>
   );

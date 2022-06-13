@@ -2,7 +2,7 @@
 /** @jsxFrag Fragment */
 import { Fragment, h, PageProps, tw, twas } from "../client_deps.ts";
 import { getCookies, HandlerContext, setCookie } from "../server_deps.ts";
-import { database } from "../communication/database.ts";
+import { databaseLoader } from "../communication/database.ts";
 import { gitHubApi } from "../communication/github.ts";
 import type { RoomView } from "../communication/types.ts";
 
@@ -12,6 +12,7 @@ export async function handler(
 ): Promise<Response> {
   // Get cookie from request header and parse it
   const maybeAccessToken = getCookies(req.headers)["deploy_chat_token"];
+  const database = await databaseLoader.getInstance();
   if (maybeAccessToken) {
     const user = await database.getUserByAccessToken(maybeAccessToken);
     if (user) {

@@ -7,7 +7,12 @@ async function loadBadWords() {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
-  return await response.text();
+  const text = await response.text();
+  return text
+    .split(/\r?\n/)
+    // false positive on hello
+    .filter(l => l !== "hell")
+    .join("\n");
 }
 
 export interface BadWordsCleaner {

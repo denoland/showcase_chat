@@ -6,7 +6,7 @@ export function Page({ children }: { children: ComponentChildren }) {
   return (
     <>
       <img
-        src="/room.png"
+        src="/background.png"
         alt="bg"
         class={tw
           `absolute top-0 left-0 w-full min-h-screen -z-10 overflow-hidden`}

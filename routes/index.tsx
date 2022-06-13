@@ -56,26 +56,28 @@ export default function Main(
     return (
       <>
         <img
-          src="/room_list.png"
+          src="/background.png"
           alt="bg"
           class={tw
             `absolute top-0 left-0 w-full min-h-screen -z-10 bg-gray-900`}
         />
         <div
-          class={tw`flex justify-center items-center h-screen text-gray-100`}
+          class={tw`flex justify-center items-center h-screen text-gray-600`}
         >
           <div>
             <div class={tw`mb-16 mx-8 text-center`}>
               <img
-                class={tw`h-14 mx-auto mb-6`}
+                class={tw`h-24 mx-auto mb-6`}
                 src="/logo.svg"
                 alt="Deno Logo"
               />
-              <span class={tw`text-3xl font-bold mb-2`}>Deno Chat</span>
-              <br />
-              <span class={tw`text-lg`}>A minimal chat platform template.</span>
-              <br />
-              <span class={tw`text-lg`}>
+              <span class={tw`block text-3xl font-bold text-black mb-3`}>
+                Deno Chat
+              </span>
+              <span class={tw`block text-lg -mb-1.5`}>
+                A minimal chat platform template.
+              </span>
+              <span class={tw`block text-lg`}>
                 It uses <span class={tw`font-bold underline`}>Fresh</span> +
                 {" "}
                 <span class={tw`font-bold underline`}>Supabase</span> +{" "}
@@ -85,12 +87,15 @@ export default function Main(
                 API on Deno Deploy.
               </span>
             </div>
-            <ul role="list" class={tw`max-h-[21.375rem] overflow-scroll space-y-4.5`}>
+            <ul
+              role="list"
+              class={tw`max-h-[21.375rem] overflow-scroll space-y-4.5`}
+            >
               <li>
                 <a
                   href="/new"
                   class={tw
-                    `flex justify-center items-center bg-white rounded-full h-18`}
+                    `flex justify-center items-center bg-white rounded-full h-18 border-2 border-gray-300`}
                 >
                   <div
                     class={tw`w-8 h-8 flex justify-center items-center mr-2.5`}
@@ -109,7 +114,7 @@ export default function Main(
                     <a
                       href={new URL(room.roomId.toString(), url).href}
                       class={tw
-                        `grid grid-cols-3 items-center bg-white rounded-full h-18`}
+                        `grid grid-cols-3 items-center bg-white rounded-full h-18 border-2 border-gray-300`}
                     >
                       <div />
                       <p

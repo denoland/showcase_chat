@@ -89,7 +89,7 @@ export default function Main(
             </div>
             <ul
               role="list"
-              class={tw`max-h-[21.375rem] overflow-scroll space-y-4.5`}
+              class={tw`max-h-[21.375rem] overflow-y-scroll space-y-4.5`}
             >
               <li>
                 <a

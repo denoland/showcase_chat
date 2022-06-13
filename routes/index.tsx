@@ -14,7 +14,7 @@ export async function handler(
   const maybeAccessToken = getCookies(req.headers)["deploy_chat_token"];
   if (maybeAccessToken) {
     const user = await database.getUserByAccessToken(maybeAccessToken);
-    if (!user) {
+    if (user) {
       return ctx.render({ rooms: await database.getRooms() });
     }
   }

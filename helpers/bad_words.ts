@@ -11,7 +11,7 @@ async function loadBadWords() {
   return text
     .split(/\r?\n/)
     // false positive on hello
-    .filter(l => l !== "hell")
+    .filter((l) => l !== "hell")
     .join("\n");
 }
 

@@ -189,6 +189,7 @@ order by last_message_at desc nulls last;
 
 insert into rooms (id, name) values (0, 'Lobby') on conflict(id) do nothing;
 `);
+    await client.end();
     return Promise.resolve(new Database());
 
     function getEnvOrThrow(name: string) {

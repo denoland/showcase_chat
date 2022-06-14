@@ -5,15 +5,15 @@ export class GitHubApi {
       {
         method: "POST",
         body: JSON.stringify({
-          client_id: Deno.env.get("CLIENT_ID"),
-          client_secret: Deno.env.get("CLIENT_SECRET"),
+          client_id: Deno.env.get("GITHUB_CLIENT_ID"),
+          client_secret: Deno.env.get("GITHUB_CLIENT_SECRET"),
           code,
         }),
         headers: {
-          "Accept": "application/json",
+          Accept: "application/json",
           "Content-Type": "application/json",
         },
-      },
+      }
     );
     if (!response.ok) {
       throw new Error(await response.text());

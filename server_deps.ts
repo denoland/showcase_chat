@@ -6,6 +6,6 @@ export {
   getCookies,
   setCookie,
 } from "https://deno.land/std@0.143.0/http/cookie.ts";
-export * as supabase from "https://esm.sh/@supabase/supabase-js";
+export * as supabase from "https://esm.sh/@supabase/supabase-js@1.35.3";
 export { emojify } from "https://esm.sh/@twuni/emojify";
 export * as postgres from "https://deno.land/x/postgres@v0.16.1/mod.ts";

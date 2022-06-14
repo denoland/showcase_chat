@@ -1,3 +1,5 @@
+![](static/screenshot.png)
+
 ## `showcase_chat`
 
 A minimal chat platform template. It uses [Fresh](https://fresh.deno.dev) +

@@ -79,11 +79,11 @@ export default function Main(
                 A minimal chat platform template.
               </span>
               <span class={tw`block text-lg`}>
-                It uses <span class={tw`font-bold underline`}>Fresh</span> +
+                It uses <span class={tw`font-bold`}>Fresh</span> +
                 {" "}
-                <span class={tw`font-bold underline`}>Supabase</span> +{" "}
-                <span class={tw`font-bold underline`}>twind</span> +{" "}
-                <span class={tw`font-bold underline`}>BroadcastChannel</span>
+                <span class={tw`font-bold`}>Supabase</span> +{" "}
+                <span class={tw`font-bold`}>twind</span> +{" "}
+                <span class={tw`font-bold`}>BroadcastChannel</span>
                 {" "}
                 API on Deno Deploy.
               </span>

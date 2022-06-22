@@ -59,7 +59,7 @@ export default function Main({ url, data }: PageProps<{ rooms: RoomView[] }>) {
       <img
         src="/background.png"
         alt="bg"
-        class={tw`absolute top-0 left-0 w-full min-h-screen -z-10 bg-gray-900`}
+        class={tw`absolute top-0 left-0 w-full min-h-screen -z-10 bg-gray-900 object-cover`}
       />
       <div class={tw`flex justify-center items-center h-screen text-gray-600`}>
         <div>

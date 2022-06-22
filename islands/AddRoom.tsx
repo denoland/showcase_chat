@@ -1,7 +1,8 @@
 /** @jsx h */
-/** @jsxFrag Fragment */
-import { Fragment, h, IS_BROWSER, tw, useState } from "../client_deps.ts";
-import { server } from "../communication/server.ts";
+import { h } from "preact";
+import { useState } from "preact/hooks";
+import { tw } from "@twind";
+import { server } from "@/communication/server.ts";
 
 export default function AddRoom() {
   const [roomName, setRoomName] = useState("");

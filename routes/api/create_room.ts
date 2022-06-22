@@ -1,9 +1,9 @@
-import { HandlerContext, Handlers } from "../../server_deps.ts";
-import { databaseLoader } from "../../communication/database.ts";
-import { badWordsCleanerLoader } from "../../helpers/bad_words.ts";
+import { Handlers } from "$fresh/server.ts";
+import { databaseLoader } from "@/communication/database.ts";
+import { badWordsCleanerLoader } from "@/helpers/bad_words.ts";
 
 export const handler: Handlers = {
-  POST: async (req: Request, _ctx: HandlerContext): Promise<Response> => {
+  async POST(req, _ctx) {
     const badWordsCleaner = await badWordsCleanerLoader.getInstance();
     const name = badWordsCleaner.clean(await req.text());
     const database = await databaseLoader.getInstance();

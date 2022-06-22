@@ -1,8 +1,10 @@
-import { emojify, getCookies, HandlerContext } from "../../server_deps.ts";
-import { databaseLoader } from "../../communication/database.ts";
-import { RoomChannel } from "../../communication/channel.ts";
-import { badWordsCleanerLoader } from "../../helpers/bad_words.ts";
-import { ApiSendMessage } from "../../communication/types.ts";
+import { HandlerContext } from "$fresh/server.ts";
+import { getCookies } from "$std/http/cookie.ts";
+import { emojify } from "emojify";
+import { databaseLoader } from "@/communication/database.ts";
+import { RoomChannel } from "@/communication/channel.ts";
+import { badWordsCleanerLoader } from "@/helpers/bad_words.ts";
+import { ApiSendMessage } from "@/communication/types.ts";
 
 export async function handler(
   req: Request,

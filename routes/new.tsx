@@ -1,8 +1,8 @@
 /** @jsx h */
-/** @jsxFrag Fragment */
-import { Fragment, h, tw } from "../client_deps.ts";
-import { Page } from "../helpers/Page.tsx";
-import AddRoom from "../islands/AddRoom.tsx";
+import { h } from "preact";
+import { tw } from "@twind";
+import { Page } from "@/helpers/Page.tsx";
+import AddRoom from "@/islands/AddRoom.tsx";
 
 export default function NewRoom() {
   return (

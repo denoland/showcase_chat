@@ -1,4 +1,4 @@
-import { Handler } from "../../server_deps.ts";
+import { Handler } from "$fresh/server.ts";
 
 export const handler: Handler = (req: Request): Response => {
   const url = new URL("https://github.com/login/oauth/authorize");

@@ -1,4 +1,4 @@
-import { deleteCookie } from "../../server_deps.ts";
+import { deleteCookie } from "$std/http/cookie.ts";
 
 export function handler(req: Request): Response {
   const headers = new Headers({

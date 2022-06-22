@@ -1,5 +1,6 @@
 import { ResourceLoader } from "../helpers/loader.ts";
-import { postgres, supabase } from "../server_deps.ts";
+import * as postgres from "$postgres";
+import * as supabase from "supabase";
 import type { MessageView } from "./types.ts";
 
 export interface DatabaseUser {

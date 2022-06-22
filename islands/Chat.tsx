@@ -1,17 +1,11 @@
 /** @jsx h */
 /** @jsxFrag Fragment */
-import {
-  Fragment,
-  h,
-  tw,
-  twas,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from "../client_deps.ts";
+import { Fragment, h } from "preact";
+import { useEffect, useReducer, useRef, useState } from "preact/hooks";
+import { tw } from "@twind";
+import twas from "twas";
 import type { MessageView, UserView } from "../communication/types.ts";
-import { server } from "../communication/server.ts";
+import { server } from "@/communication/server.ts";
 
 export default function Chat(
   { roomId, roomName, initialMessages, user }: {

@@ -1,11 +1,11 @@
 /** @jsx h */
-/** @jsxFrag Fragment */
-import { Fragment, h, PageProps } from "../client_deps.ts";
-import { getCookies, Handler, HandlerContext } from "../server_deps.ts";
-import { databaseLoader } from "../communication/database.ts";
-import Chat from "../islands/Chat.tsx";
-import type { MessageView, UserView } from "../communication/types.ts";
-import { Page } from "../helpers/Page.tsx";
+import { h } from "preact";
+import { Handler, HandlerContext, PageProps } from "$fresh/server.ts";
+import { getCookies } from "$std/http/cookie.ts";
+import { databaseLoader } from "@/communication/database.ts";
+import Chat from "@/islands/Chat.tsx";
+import type { MessageView, UserView } from "@/communication/types.ts";
+import { Page } from "@/helpers/Page.tsx";
 
 interface Data {
   messages: MessageView[];

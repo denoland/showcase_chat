@@ -76,7 +76,7 @@ export default function Chat(
   return (
     <>
       <div
-        class={tw`w-1/2 h-2/3 rounded-2xl mb-5 pl-6 flex flex-col pt-4 pb-2`}
+        class={tw`w-5/6 md:w-1/2 h-2/3 rounded-2xl mb-5 pl-6 flex flex-col pt-4 pb-2`}
       >
         <div
           class={tw
@@ -105,7 +105,7 @@ export default function Chat(
           )}
         </div>
       </div>
-      <div class={tw`w-1/2 h-16 flex-none rounded-full flex items-center`}>
+      <div class={tw`w-5/6 md:w-1/2 h-16 flex-none rounded-full flex items-center`}>
         <ChatInput
           input={input}
           onInput={(input) => {

@@ -1,6 +1,8 @@
 /** @jsx h */
-import { h } from "preact";
+/** @jsxFrag Fragment */
+import { Fragment, h } from "preact";
 import { Handler, HandlerContext, PageProps } from "$fresh/server.ts";
+import { Head } from '$fresh/runtime.ts';
 import { getCookies } from "$std/http/cookie.ts";
 import { databaseLoader } from "@/communication/database.ts";
 import Chat from "@/islands/Chat.tsx";
@@ -44,13 +46,18 @@ export const handler: Handler<Data> = async (
 
 export default function Room({ data, params }: PageProps<Data>) {
   return (
-    <Page>
-      <Chat
-        roomId={+params.room}
-        initialMessages={data.messages}
-        roomName={data.roomName}
-        user={data.user}
-      />
-    </Page>
+    <>
+      <Head>
+        <title>New Room | Deno Chat</title>
+      </Head>
+      <Page>
+        <Chat
+          roomId={+params.room}
+          initialMessages={data.messages}
+          roomName={data.roomName}
+          user={data.user}
+        />
+      </Page>
+    </>
   );
 }

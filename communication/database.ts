@@ -2,6 +2,7 @@ import { ResourceLoader } from "../helpers/loader.ts";
 import * as postgres from "$postgres";
 import * as supabase from "supabase";
 import type { MessageView } from "./types.ts";
+import "https://deno.land/x/dotenv/load.ts";
 
 export interface DatabaseUser {
   userId: number;

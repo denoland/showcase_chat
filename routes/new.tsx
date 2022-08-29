@@ -7,7 +7,7 @@ import AddRoom from "@/islands/AddRoom.tsx";
 export default function NewRoom() {
   return (
     <Page>
-      <div class={tw`rounded-2xl w-5/12 pt-4 pb-8 px-7`}>
+      <div class={tw`rounded-2xl w-5/6 md:w-5/12 max-w-xl pt-4 pb-8 px-7`}>
         <div class={tw`h-8 flex-none flex justify-between items-center mb-9`}>
           <a href="/">
             <img src="/arrow.svg" alt="Left Arrow" />

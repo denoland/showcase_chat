@@ -28,7 +28,7 @@ export default function AddRoom() {
           </p>
         </div>
         <input
-          class={tw`w-96 h-9 rounded-md border border-gray-300 pl-3.5`}
+          class={tw`w-full h-9 rounded-md border border-gray-300 pl-3.5`}
           type="text"
           name="roomName"
           id="roomName"

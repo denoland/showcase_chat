@@ -4,11 +4,18 @@ import { tw } from "@twind";
 export function Footer() {
   return (
     <div
-      class={tw
-        `mt-16 flex justify-center items-center flex-col border-none bg-transparent text-black`}
+      class={tw`mt-16 flex justify-center items-center border-none bg-transparent text-black gap-4`}
     >
+      <a href="https://fresh.deno.dev">
+        <img
+          width="197"
+          height="37"
+          src="https://fresh.deno.dev/fresh-badge.svg"
+        />
+      </a>
+
       <a
-        class={tw`font-bold flex justify-start items-center cursor-pointer`}
+        class={tw`font-bold flex justify-start items-center cursor-pointer gap-1 hover:underline focus:underline`}
         href="https://github.com/denoland/showcase_chat"
         rel="noopener noreferrer"
         target="_blank"

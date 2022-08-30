@@ -48,7 +48,7 @@ export default function Room({ data, params }: PageProps<Data>) {
   return (
     <>
       <Head>
-        <title>${data.roomName} | Deno Chat</title>
+        <title>{data.roomName} | Deno Chat</title>
       </Head>
       <Page>
         <Chat

@@ -3,6 +3,7 @@
 import { Fragment, h } from "preact";
 import { tw } from "@twind";
 import { HandlerContext, PageProps } from "$fresh/server.ts";
+import { Head } from '$fresh/runtime.ts';
 import twas from "twas";
 import { getCookies, setCookie } from "$std/http/cookie.ts";
 import { databaseLoader } from "@/communication/database.ts";
@@ -56,6 +57,9 @@ export async function handler(
 export default function Main({ url, data }: PageProps<{ rooms: RoomView[] }>) {
   return (
     <>
+      <Head>
+        <title>Deno Chat</title>
+      </Head>
       <img
         src="/background.png"
         alt="bg"

@@ -151,7 +151,7 @@ export default function Main({ url, data }: PageProps<{ rooms: RoomView[] }>) {
                         class={tw
                           `grid grid-cols-3 items-center bg-white rounded-full h-18 border-2 border-gray-300`}
                       >
-                        <div />
+                        <div class={tw`w-12 h-12 bg-cover rounded-3xl ml-3`} style={`background-image: url(${"https://deno-avatar.deno.dev/avatar/" + room.roomId})`} />
                         <p
                           class={tw
                             `text-xl font-bold text-gray-900 justify-self-center`}

@@ -129,7 +129,7 @@ export default function Main({ url, data }: PageProps<{ rooms: RoomView[] }>) {
                   <a
                     href="/new"
                     class={tw
-                      `flex justify-center items-center bg-white rounded-full h-18 border-2 border-gray-300`}
+                      `flex justify-center items-center bg-white rounded-full h-18 border-2 border-gray-300 transition-colors hover:(bg-green-100 border-green-400) group`}
                   >
                     <div
                       class={tw
@@ -137,7 +137,7 @@ export default function Main({ url, data }: PageProps<{ rooms: RoomView[] }>) {
                     >
                       <img src="/plus.svg" alt="Plus" />
                     </div>
-                    <span class={tw`text-xl font-bold text-gray-900`}>
+                    <span class={tw`text-xl font-bold text-gray-900 group-hover:underline group-focus:underline`}>
                       New Room
                     </span>
                   </a>
@@ -149,12 +149,12 @@ export default function Main({ url, data }: PageProps<{ rooms: RoomView[] }>) {
                       <a
                         href={new URL(room.roomId.toString(), url).href}
                         class={tw
-                          `grid grid-cols-3 items-center bg-white rounded-full h-18 border-2 border-gray-300`}
+                          `grid grid-cols-3 items-center bg-white rounded-full h-18 border-2 border-gray-300 transition-colors hover:(bg-gray-100 border-gray-400) group`}
                       >
                         <div />
                         <p
                           class={tw
-                            `text-xl font-bold text-gray-900 justify-self-center`}
+                            `text-xl font-bold text-gray-900 justify-self-center group-hover:underline group-focus:underline`}
                         >
                           {room.name}
                         </p>

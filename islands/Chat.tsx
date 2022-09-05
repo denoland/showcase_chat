@@ -82,7 +82,7 @@ export default function Chat(
           class={tw
             `h-8 flex-none pl-1 pr-7 mb-16 flex justify-between items-center`}
         >
-          <a href="/">
+          <a href="/" class={tw`h-8 w-8 p-2 flex items-center justify-center hover:bg-gray-200 rounded-2xl`}>
             <img src="/arrow.svg" alt="Left Arrow" />
           </a>
           <div class={tw`font-medium text-lg`}>{roomName}</div>
@@ -135,10 +135,10 @@ function ChatInput({ input, onInput, onSend }: {
         onInput={(e) => onInput(e.currentTarget.value)}
         onKeyDown={(e) => e.key === "Enter" && onSend()}
       />
-      <button onClick={onSend}>
+      <button onClick={onSend} class={tw`mx-3 p-2 hover:bg-gray-200 rounded-2xl`}>
         <svg
           class={tw
-            `w-5 h-5 text-gray-500 origin-center transform rotate-90 mr-6`}
+            `w-5 h-5 text-gray-500 origin-center transform rotate-90`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"

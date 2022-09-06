@@ -3,7 +3,7 @@
     "@/": "./",
     "@twind": "./helpers/twind.ts",
 
-    "$fresh/": "https://deno.land/x/fresh@1.0.0-rc.2/",
+    "$fresh/": "https://raw.githubusercontent.com/denoland/fresh/b12867a5823a338b318b14f1b6e399e61064dce9/",
     "preact": "https://esm.sh/preact@10.6.6",
     "preact/": "https://esm.sh/preact@10.6.6/",
     "preact-render-to-string": "https://esm.sh/preact-render-to-string@5.1.20?deps=preact@10.6.6",

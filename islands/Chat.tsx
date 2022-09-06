@@ -1,6 +1,3 @@
-/** @jsx h */
-/** @jsxFrag Fragment */
-import { Fragment, h } from "preact";
 import { useEffect, useReducer, useRef, useState } from "preact/hooks";
 import { tw } from "@twind";
 import twas from "twas";
@@ -79,10 +76,12 @@ export default function Chat(
         class={tw`w-5/6 md:w-1/2 h-2/3 rounded-2xl mb-5 pl-6 flex flex-col pt-4 pb-2`}
       >
         <div
-          class={tw
-            `h-8 flex-none pl-1 pr-7 mb-16 flex justify-between items-center`}
+          class={tw`h-8 flex-none pl-1 pr-7 mb-16 flex justify-between items-center`}
         >
-          <a href="/" class={tw`h-8 w-8 p-2 flex items-center justify-center hover:bg-gray-200 rounded-2xl`}>
+          <a
+            href="/"
+            class={tw`h-8 w-8 p-2 flex items-center justify-center hover:bg-gray-200 rounded-2xl`}
+          >
             <img src="/arrow.svg" alt="Left Arrow" />
           </a>
           <div class={tw`font-medium text-lg`}>{roomName}</div>
@@ -105,7 +104,9 @@ export default function Chat(
           )}
         </div>
       </div>
-      <div class={tw`w-5/6 md:w-1/2 h-16 flex-none rounded-full flex items-center`}>
+      <div
+        class={tw`w-5/6 md:w-1/2 h-16 flex-none rounded-full flex items-center`}
+      >
         <ChatInput
           input={input}
           onInput={(input) => {
@@ -129,16 +130,17 @@ function ChatInput({ input, onInput, onSend }: {
       <input
         type="text"
         placeholder="Message"
-        class={tw
-          `block mx-6 w-full bg-transparent outline-none focus:text-gray-700`}
+        class={tw`block mx-6 w-full bg-transparent outline-none focus:text-gray-700`}
         value={input}
         onInput={(e) => onInput(e.currentTarget.value)}
         onKeyDown={(e) => e.key === "Enter" && onSend()}
       />
-      <button onClick={onSend} class={tw`mx-3 p-2 hover:bg-gray-200 rounded-2xl`}>
+      <button
+        onClick={onSend}
+        class={tw`mx-3 p-2 hover:bg-gray-200 rounded-2xl`}
+      >
         <svg
-          class={tw
-            `w-5 h-5 text-gray-500 origin-center transform rotate-90`}
+          class={tw`w-5 h-5 text-gray-500 origin-center transform rotate-90`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"

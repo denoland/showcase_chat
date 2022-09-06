@@ -1,9 +1,6 @@
-/** @jsx h */
-/** @jsxFrag Fragment */
-import { Fragment, h } from "preact";
 import { tw } from "@twind";
 import { HandlerContext, PageProps } from "$fresh/server.ts";
-import { Head } from '$fresh/runtime.ts';
+import { Head } from "$fresh/runtime.ts";
 import twas from "twas";
 import { getCookies, setCookie } from "$std/http/cookie.ts";
 import { databaseLoader } from "@/communication/database.ts";
@@ -128,16 +125,16 @@ export default function Main({ url, data }: PageProps<{ rooms: RoomView[] }>) {
                 <li>
                   <a
                     href="/new"
-                    class={tw
-                      `flex justify-center items-center bg-white rounded-full h-18 border-2 border-gray-300 transition-colors hover:(bg-green-100 border-green-400) group`}
+                    class={tw`flex justify-center items-center bg-white rounded-full h-18 border-2 border-gray-300 transition-colors hover:(bg-green-100 border-green-400) group`}
                   >
                     <div
-                      class={tw
-                        `w-8 h-8 flex justify-center items-center mr-2.5`}
+                      class={tw`w-8 h-8 flex justify-center items-center mr-2.5`}
                     >
                       <img src="/plus.svg" alt="Plus" />
                     </div>
-                    <span class={tw`text-xl font-bold text-gray-900 group-hover:underline group-focus:underline`}>
+                    <span
+                      class={tw`text-xl font-bold text-gray-900 group-hover:underline group-focus:underline`}
+                    >
                       New Room
                     </span>
                   </a>
@@ -148,19 +145,21 @@ export default function Main({ url, data }: PageProps<{ rooms: RoomView[] }>) {
                     <li key={room.roomId}>
                       <a
                         href={new URL(room.roomId.toString(), url).href}
-                        class={tw
-                          `grid grid-cols-3 items-center bg-white rounded-full h-18 border-2 border-gray-300 transition-colors hover:(bg-gray-100 border-gray-400) group`}
+                        class={tw`grid grid-cols-3 items-center bg-white rounded-full h-18 border-2 border-gray-300 transition-colors hover:(bg-gray-100 border-gray-400) group`}
                       >
-                        <div class={tw`w-12 h-12 bg-cover rounded-3xl ml-3`} style={`background-image: url(${"https://deno-avatar.deno.dev/avatar/" + room.roomId})`} />
+                        <div
+                          class={tw`w-12 h-12 bg-cover rounded-3xl ml-3`}
+                          style={`background-image: url(${
+                            "https://deno-avatar.deno.dev/avatar/" + room.roomId
+                          })`}
+                        />
                         <p
-                          class={tw
-                            `text-xl font-bold text-gray-900 justify-self-center group-hover:underline group-focus:underline`}
+                          class={tw`text-xl font-bold text-gray-900 justify-self-center group-hover:underline group-focus:underline`}
                         >
                           {room.name}
                         </p>
                         <p
-                          class={tw
-                            `font-medium text-gray-400 mr-8 justify-self-end`}
+                          class={tw`font-medium text-gray-400 mr-8 justify-self-end`}
                         >
                           {room.lastMessageAt
                             ? twas(new Date(room.lastMessageAt).getTime())
@@ -176,8 +175,7 @@ export default function Main({ url, data }: PageProps<{ rooms: RoomView[] }>) {
               <div class={tw`flex justify-center items-center flex-col`}>
                 <a
                   href="/api/login"
-                  class={tw
-                    `bg-gray-900 text-gray-100 hover:text-white shadow font-bold text-sm py-3 px-4 rounded flex justify-start items-center cursor-pointer mt-2`}
+                  class={tw`bg-gray-900 text-gray-100 hover:text-white shadow font-bold text-sm py-3 px-4 rounded flex justify-start items-center cursor-pointer mt-2`}
                 >
                   <svg
                     viewBox="0 0 24 24"

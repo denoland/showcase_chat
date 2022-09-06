@@ -1,7 +1,4 @@
-/** @jsx h */
-/** @jsxFrag Fragment */
-import { Fragment, h } from "preact";
-import { Head } from '$fresh/runtime.ts';
+import { Head } from "$fresh/runtime.ts";
 import { tw } from "@twind";
 import { Page } from "@/helpers/Page.tsx";
 import AddRoom from "@/islands/AddRoom.tsx";
@@ -15,7 +12,10 @@ export default function NewRoom() {
       <Page>
         <div class={tw`rounded-2xl w-5/6 md:w-5/12 max-w-xl pt-4 pb-8 px-7`}>
           <div class={tw`h-8 flex-none flex justify-between items-center mb-9`}>
-            <a href="/" class={tw`h-8 w-8 p-2 flex items-center justify-center hover:bg-gray-200 rounded-2xl`}>
+            <a
+              href="/"
+              class={tw`h-8 w-8 p-2 flex items-center justify-center hover:bg-gray-200 rounded-2xl`}
+            >
               <img src="/arrow.svg" alt="Left Arrow" />
             </a>
             <div class={tw`font-medium text-lg flex items-center`}>

@@ -1,4 +1,3 @@
-/** @jsx h */
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import { tw } from "@twind";
@@ -37,8 +36,7 @@ export default function AddRoom() {
         />
       </label>
       <button
-        class={tw
-          `mt-7 flex flex items-center rounded-md h-8 py-2 px-4 bg-gray-800 font-medium text-sm text-white`}
+        class={tw`mt-7 flex flex items-center rounded-md h-8 py-2 px-4 bg-gray-800 font-medium text-sm text-white`}
         type="submit"
       >
         create

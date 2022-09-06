@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef, useState } from "preact/hooks";
-import { tw } from "@twind";
+
 import twas from "twas";
 import type { MessageView, UserView } from "../communication/types.ts";
 import { server } from "@/communication/server.ts";
@@ -72,41 +72,34 @@ export default function Chat(
 
   return (
     <>
-      <div
-        class={tw`w-5/6 md:w-1/2 h-2/3 rounded-2xl mb-5 pl-6 flex flex-col pt-4 pb-2`}
-      >
-        <div
-          class={tw`h-8 flex-none pl-1 pr-7 mb-16 flex justify-between items-center`}
-        >
+      <div class="w-5/6 md:w-1/2 h-2/3 rounded-2xl mb-5 pl-6 flex flex-col pt-4 pb-2">
+        <div class="h-8 flex-none pl-1 pr-7 mb-16 flex justify-between items-center">
           <a
             href="/"
-            class={tw`h-8 w-8 p-2 flex items-center justify-center hover:bg-gray-200 rounded-2xl`}
+            class="h-8 w-8 p-2 flex items-center justify-center hover:bg-gray-200 rounded-2xl"
           >
             <img src="/arrow.svg" alt="Left Arrow" />
           </a>
-          <div class={tw`font-medium text-lg`}>{roomName}</div>
+          <div class="font-medium text-lg">{roomName}</div>
           <div />
         </div>
 
         <div
-          class={tw`flex-auto overflow-y-scroll`}
+          class="flex-auto overflow-y-scroll"
           ref={messagesContainer}
         >
           {messages.map((msg) => <Message message={msg} />)}
         </div>
 
-        <div class={tw`h-6 mt-1`}>
+        <div class="h-6 mt-1">
           {typing && (
-            <div class={tw`text-sm text-gray-400`}>
-              <span class={tw`text-gray-800`}>{typing.user.name}</span>{" "}
-              is typing...
+            <div class="text-sm text-gray-400">
+              <span class="text-gray-800">{typing.user.name}</span> is typing...
             </div>
           )}
         </div>
       </div>
-      <div
-        class={tw`w-5/6 md:w-1/2 h-16 flex-none rounded-full flex items-center`}
-      >
+      <div class="w-5/6 md:w-1/2 h-16 flex-none rounded-full flex items-center">
         <ChatInput
           input={input}
           onInput={(input) => {
@@ -130,17 +123,17 @@ function ChatInput({ input, onInput, onSend }: {
       <input
         type="text"
         placeholder="Message"
-        class={tw`block mx-6 w-full bg-transparent outline-none focus:text-gray-700`}
+        class="block mx-6 w-full bg-transparent outline-none focus:text-gray-700"
         value={input}
         onInput={(e) => onInput(e.currentTarget.value)}
         onKeyDown={(e) => e.key === "Enter" && onSend()}
       />
       <button
         onClick={onSend}
-        class={tw`mx-3 p-2 hover:bg-gray-200 rounded-2xl`}
+        class="mx-3 p-2 hover:bg-gray-200 rounded-2xl"
       >
         <svg
-          class={tw`w-5 h-5 text-gray-500 origin-center transform rotate-90`}
+          class="w-5 h-5 text-gray-500 origin-center transform rotate-90"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -154,22 +147,22 @@ function ChatInput({ input, onInput, onSend }: {
 
 function Message({ message }: { message: MessageView }) {
   return (
-    <div class={tw`flex mb-4.5`}>
+    <div class="flex mb-4.5">
       <img
         src={message.from.avatarUrl}
         alt={`${message.from.name}'s avatar`}
-        class={tw`mr-4 w-9 h-9 rounded-full`}
+        class="mr-4 w-9 h-9 rounded-full"
       />
       <div>
-        <p class={tw`flex items-baseline mb-1.5`}>
-          <span class={tw`mr-2 font-bold`}>
+        <p class="flex items-baseline mb-1.5">
+          <span class="mr-2 font-bold">
             {message.from.name}
           </span>
-          <span class={tw`text-xs text-gray-400 font-extralight`}>
+          <span class="text-xs text-gray-400 font-extralight">
             {twas(new Date(message.createdAt).getTime())}
           </span>
         </p>
-        <p class={tw`text-sm text-gray-800`}>{message.message}</p>
+        <p class="text-sm text-gray-800">{message.message}</p>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import { Head } from "$fresh/runtime.ts";
-
 import { Page } from "@/helpers/Page.tsx";
 import AddRoom from "@/islands/AddRoom.tsx";
 

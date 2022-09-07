@@ -1,5 +1,7 @@
-/** @type {import("$fresh/plugins/twind.ts").Options} */
+import { Options } from "$fresh/plugins/twind.ts";
+
 export default {
+  selfURL: import.meta.url,
   theme: {
     extend: {
       spacing: {
@@ -8,4 +10,4 @@ export default {
       },
     },
   },
-};
+} as Options;

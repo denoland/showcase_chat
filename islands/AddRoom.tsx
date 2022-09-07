@@ -1,5 +1,4 @@
 import { useState } from "preact/hooks";
-
 import { server } from "@/communication/server.ts";
 
 export default function AddRoom() {

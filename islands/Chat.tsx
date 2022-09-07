@@ -1,5 +1,4 @@
 import { useEffect, useReducer, useRef, useState } from "preact/hooks";
-
 import twas from "twas";
 import type { MessageView, UserView } from "../communication/types.ts";
 import { server } from "@/communication/server.ts";
@@ -128,10 +127,7 @@ function ChatInput({ input, onInput, onSend }: {
         onInput={(e) => onInput(e.currentTarget.value)}
         onKeyDown={(e) => e.key === "Enter" && onSend()}
       />
-      <button
-        onClick={onSend}
-        class="mx-3 p-2 hover:bg-gray-200 rounded-2xl"
-      >
+      <button onClick={onSend} class="mx-3 p-2 hover:bg-gray-200 rounded-2xl">
         <svg
           class="w-5 h-5 text-gray-500 origin-center transform rotate-90"
           xmlns="http://www.w3.org/2000/svg"

@@ -1,7 +1,4 @@
-/** @jsx h */
-import { h } from "preact";
 import { useState } from "preact/hooks";
-import { tw } from "@twind";
 import { server } from "@/communication/server.ts";
 
 export default function AddRoom() {
@@ -21,14 +18,14 @@ export default function AddRoom() {
       }}
     >
       <label>
-        <div class={tw`mb-2.5`}>
-          <p class={tw`font-semibold`}>Name</p>
-          <p class={tw`font-medium text-xs text-gray-500`}>
+        <div class="mb-2.5">
+          <p class="font-semibold">Name</p>
+          <p class="font-medium text-xs text-gray-500">
             The name of the chat room.
           </p>
         </div>
         <input
-          class={tw`w-full h-9 rounded-md border border-gray-300 pl-3.5`}
+          class="w-full h-9 rounded-md border border-gray-300 pl-3.5"
           type="text"
           name="roomName"
           id="roomName"
@@ -37,8 +34,7 @@ export default function AddRoom() {
         />
       </label>
       <button
-        class={tw
-          `mt-7 flex flex items-center rounded-md h-8 py-2 px-4 bg-gray-800 font-medium text-sm text-white`}
+        class="mt-7 flex flex items-center rounded-md h-8 py-2 px-4 bg-gray-800 font-medium text-sm text-white"
         type="submit"
       >
         create

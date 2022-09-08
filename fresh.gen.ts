@@ -2,6 +2,7 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import config from "./deno.json" assert { type: "json" };
 import * as $0 from "./routes/[room].tsx";
 import * as $1 from "./routes/api/connect.ts";
 import * as $2 from "./routes/api/create_room.ts";
@@ -29,6 +30,7 @@ const manifest = {
     "./islands/Chat.tsx": $$1,
   },
   baseUrl: import.meta.url,
+  config,
 };
 
 export default manifest;

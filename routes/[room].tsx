@@ -1,8 +1,5 @@
-/** @jsx h */
-/** @jsxFrag Fragment */
-import { Fragment, h } from "preact";
 import { Handler, HandlerContext, PageProps } from "$fresh/server.ts";
-import { Head } from '$fresh/runtime.ts';
+import { Head } from "$fresh/runtime.ts";
 import { getCookies } from "$std/http/cookie.ts";
 import { databaseLoader } from "@/communication/database.ts";
 import Chat from "@/islands/Chat.tsx";

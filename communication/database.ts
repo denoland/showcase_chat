@@ -153,6 +153,11 @@ export const databaseLoader = new ResourceLoader<Database>({
       user: Deno.env.get("SUPABASE_DB_USER") ?? "postgres",
       password: getEnvOrThrow("SUPABASE_DB_PASSWORD"),
       database: Deno.env.get("SUPABASE_DB_NAME") ?? "postgres",
+      tls: {
+        caCertificates: [Deno.env.get("SUPABASE_CA_CERTIFICATE")]
+          .filter(Boolean)
+          .map((pem) => pem!.split(/\s+/).map((s) => `${s}\n`).join("")),
+      },
     });
     await client.connect();
     await client.queryArray(`

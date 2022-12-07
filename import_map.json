@@ -1,7 +1,7 @@
 {
   "imports": {
     "@/": "./",
-    "$fresh/": "https://raw.githubusercontent.com/denoland/fresh/main/",
+    "$fresh/": "https://raw.githubusercontent.com/denoland/fresh/1.1.0/",
     "preact": "https://esm.sh/preact@10.10.6",
     "preact/": "https://esm.sh/preact@10.10.6/",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@5.2.2/",

@@ -11,6 +11,6 @@
     "$std/": "https://deno.land/std@0.144.0/",
     "supabase": "https://esm.sh/@supabase/supabase-js@1.35.3",
     "emojify": "https://esm.sh/@twuni/emojify@1.0.2",
-    "$postgres": "https://deno.land/x/postgres@v0.16.1/mod.ts"
+    "$postgres": "https://deno.land/x/postgresjs@v3.3.2/mod.js"
   }
 }

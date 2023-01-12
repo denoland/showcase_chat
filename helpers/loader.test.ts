@@ -1,4 +1,4 @@
-import { assertEquals, assertRejects } from "../test_deps.ts";
+import { assertEquals, assertRejects } from "$std/testing/asserts.ts";
 import { ResourceLoader } from "./loader.ts";
 
 Deno.test("resource loading", async () => {

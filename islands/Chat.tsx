@@ -3,6 +3,15 @@ import twas from "twas";
 import type { MessageView, UserView } from "../communication/types.ts";
 import { server } from "@/communication/server.ts";
 
+const esca = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  "'": "&#39;",
+  '"': "&quot;",
+};
+const escape = (es) => es.replace(/[&<>'"]/g, (m) => esca[m]);
+
 export default function Chat(
   { roomId, roomName, initialMessages, user }: {
     roomId: number;
@@ -158,7 +167,7 @@ function Message({ message }: { message: MessageView }) {
             {twas(new Date(message.createdAt).getTime())}
           </span>
         </p>
-        <p class="text-sm text-gray-800">{message.message}</p>
+        <p class="text-sm text-gray-800">{escape(message.message)}</p>
       </div>
     </div>
   );

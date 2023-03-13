@@ -1,0 +1,16 @@
+{
+  "imports": {
+    "@/": "./",
+    "$fresh/": "https://raw.githubusercontent.com/denoland/fresh/1.1.1/",
+    "preact": "https://esm.sh/preact@10.10.6",
+    "preact/": "https://esm.sh/preact@10.10.6/",
+    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@5.2.2/",
+    "twind": "https://esm.sh/twind@0.16.17",
+    "twind/": "https://esm.sh/twind@0.16.17/",
+    "twas": "https://esm.sh/twas@2.1.2",
+    "$std/": "https://deno.land/std@0.144.0/",
+    "supabase": "https://esm.sh/@supabase/supabase-js@1.35.3",
+    "emojify": "https://esm.sh/@twuni/emojify@1.0.2",
+    "$postgres": "https://deno.land/x/postgresjs@v3.3.2/mod.js"
+  }
+}

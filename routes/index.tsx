@@ -4,7 +4,7 @@ import twas from "twas";
 import { getCookies, setCookie } from "$std/http/cookie.ts";
 import { databaseLoader } from "@/communication/database.ts";
 import { gitHubApi } from "@/communication/github.ts";
-import { Footer } from "@/helpers/Footer.tsx";
+import { Footer } from "@/components/Footer.tsx";
 import type { RoomView } from "@/communication/types.ts";
 
 export async function handler(

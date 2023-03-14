@@ -4,7 +4,7 @@ import { getCookies } from "$std/http/cookie.ts";
 import { databaseLoader } from "@/communication/database.ts";
 import Chat from "@/islands/Chat.tsx";
 import type { MessageView, UserView } from "@/communication/types.ts";
-import { Page } from "@/helpers/Page.tsx";
+import { Page } from "@/components/Page.tsx";
 
 interface Data {
   messages: MessageView[];

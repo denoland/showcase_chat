@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { databaseLoader } from "@/communication/database.ts";
-import { badWordsCleanerLoader } from "@/helpers/bad_words.ts";
+import { badWordsCleanerLoader } from "@/utils/bad_words.ts";
 
 export const handler: Handlers = {
   async POST(req, _ctx) {

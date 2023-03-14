@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef, useState } from "preact/hooks";
 import twas from "twas";
-import type { MessageView, UserView } from "../communication/types.ts";
+import type { MessageView, UserView } from "@/communication/types.ts";
 import { server } from "@/communication/server.ts";
 
 export default function Chat(

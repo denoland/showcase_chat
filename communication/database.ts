@@ -1,4 +1,4 @@
-import { ResourceLoader } from "../utils/loader.ts";
+import { ResourceLoader } from "@/utils/loader.ts";
 import postgres from "$postgres";
 import * as supabase from "supabase";
 import type { MessageView } from "./types.ts";

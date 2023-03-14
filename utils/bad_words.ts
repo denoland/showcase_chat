@@ -1,4 +1,4 @@
-import { ResourceLoader } from "./loader.ts";
+import { ResourceLoader } from "@/utils/loader.ts";
 const defaultBadListUrl =
   "https://raw.githubusercontent.com/TrentonGage11/Google-profanity-words/209d0a75ae78dd8da6a38d2cb12935fd78d3e810/list.txt";
 

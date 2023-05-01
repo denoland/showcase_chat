@@ -1,5 +1,5 @@
 import { assertEquals } from "$std/testing/asserts.ts";
-import { BadWordsCleanerLoader } from "./bad_words.ts";
+import { BadWordsCleanerLoader } from "@/utils/bad_words.ts";
 
 Deno.test("clean bad words", async () => {
   const listLoader = new BadWordsCleanerLoader(

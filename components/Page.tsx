@@ -1,5 +1,5 @@
 import { ComponentChildren } from "preact";
-import { Footer } from "./Footer.tsx";
+import { Footer } from "@/components/Footer.tsx";
 
 export function Page({ children }: { children: ComponentChildren }) {
   return (

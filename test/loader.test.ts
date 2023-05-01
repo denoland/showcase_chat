@@ -1,5 +1,5 @@
 import { assertEquals, assertRejects } from "$std/testing/asserts.ts";
-import { ResourceLoader } from "./loader.ts";
+import { ResourceLoader } from "@/utils/loader.ts";
 
 Deno.test("resource loading", async () => {
   let loadFunc: () => Promise<string> = async () => {
